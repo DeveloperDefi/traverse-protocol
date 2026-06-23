@@ -39,7 +39,7 @@
 
 ## MENSAGEM DE BOAS-VINDAS (#📌-anuncio-boas-vindas)
 
-> *Colar no canal fixado, formatar como mensagem da conta oficial @TraverseProtocol*
+> *Colar no canal fixado, formatar como mensagem da conta oficial @TRVprotocol*
 
 ---
 
@@ -58,7 +58,7 @@ O Traverse Protocol é um roteador de liquidez cross-chain com execução basead
 **Links importantes:**
 📄 GitHub: https://github.com/Estivalett/traverse-protocol
 📝 Whitepaper: no repositório em `/docs`
-🐦 Twitter: @TraverseProtocol
+🐦 Twitter: @TRVprotocol
 🌐 Site: traverseprotocol.io *(em breve)*
 
 **Antes de qualquer coisa, leia as #📋-regras.**

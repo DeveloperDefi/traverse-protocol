@@ -104,7 +104,7 @@ https://raw.githubusercontent.com/SEU_USUARIO/traverse-protocol/main/docs/Traver
 |---|---|
 | 🔴 Alta | Contratar auditoria antes de qualquer mainnet |
 | 🔴 Alta | Configurar Safe Multisig (safe.global) para tesouro |
-| 🟡 Média | Criar Twitter/X @TraverseProtocol e anunciar testnet |
+| 🟡 Média | Criar Twitter/X @TRVprotocol e anunciar testnet |
 | 🟡 Média | Publicar em fóruns: ETHResearch, DeFiLlama, Mirror |
 | 🟢 Normal | Criar site traverseprotocol.io |
 | 🟢 Normal | Configurar bug bounty no Immunefi |

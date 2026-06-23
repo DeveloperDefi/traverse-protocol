@@ -148,7 +148,7 @@ Read the contracts. Audit the math. We welcome scrutiny.
 The Traverse Protocol is being built for a future where cross-chain liquidity is frictionless, competitive, and community-owned.
 
 - **Website:** traverseprotocol.io *(coming soon)*
-- **Twitter:** [@TraverseProtocol](https://twitter.com/TraverseProtocol)
+- **Twitter:** [@TRVprotocol](https://twitter.com/TRVprotocol)
 - **GitHub:** [Estivalett/traverse-protocol](https://github.com/Estivalett/traverse-protocol)
 - **Email:** hello@traverseprotocol.io
 

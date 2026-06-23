@@ -185,7 +185,7 @@ This repository is for informational and development purposes only. TRV tokens r
 
 - Website: [traverseprotocol.io](https://traverseprotocol.io) *(coming soon)*
 - Email: hello@traverseprotocol.io
-- Twitter: [@TraverseProtocol](https://twitter.com/TraverseProtocol)
+- Twitter: [@TRVprotocol](https://twitter.com/TRVprotocol)
 
 ---
 

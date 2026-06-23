@@ -121,7 +121,7 @@ npx hardhat run scripts/deploy.js --network hardhat
 ## Contact
 
 - **Email:** hello@traverseprotocol.io
-- **Twitter:** @TraverseProtocol
+- **Twitter:** @TRVprotocol
 - **Discord:** [link TBD]
 
 Questions about scope during the contest period should be directed to the Discord #audit channel.

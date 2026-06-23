@@ -1,6 +1,6 @@
 # Traverse Protocol — Twitter/X Thread de Lançamento
 
-> **Conta:** @TraverseProtocol
+> **Conta:** @TRVprotocol
 > **Quando postar:** Dia do deploy em testnet ou mainnet
 > **Formato:** Thread (1/N). Copiar tweet por tweet.
 
@@ -157,7 +157,7 @@ Want in early?
 
 ⭐ Star the repo → github.com/Estivalett/traverse-protocol
 📄 Read the whitepaper (in /docs)
-🔔 Follow @TraverseProtocol
+🔔 Follow @TRVprotocol
 💬 Join Discord → [link]
 
 Testnet is coming. Solvers welcome.
