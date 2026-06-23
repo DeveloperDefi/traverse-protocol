@@ -226,9 +226,8 @@ contract VortexVesting is ReentrancyGuard, Ownable2Step {
 
         s.revoked = true;
 
-        uint256 vested    = _vestedAmount(s);
-        uint256 unclaimed = vested - s.claimedAmount;
-        uint256 unvested  = s.totalAmount - vested;
+        uint256 vested   = _vestedAmount(s);
+        uint256 unvested = s.totalAmount - vested;
 
         totalLocked -= unvested;
 
