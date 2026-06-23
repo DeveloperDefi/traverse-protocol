@@ -7,8 +7,8 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable2Step.sol";
 
 /**
- * @title VortexStaking — VTX Staking, Solver Registration & Revenue Distribution
- * @notice Allows VTX holders to stake tokens, earn a proportional share of protocol
+ * @title TraverseStaking — TRV Staking, Solver Registration & Revenue Distribution
+ * @notice Allows TRV holders to stake tokens, earn a proportional share of protocol
  *         revenue (70% of all fees), and optionally register as solvers by meeting a
  *         minimum stake requirement. Registered solvers can be slashed by governance
  *         for malicious behaviour.
@@ -19,14 +19,14 @@ import "@openzeppelin/contracts/access/Ownable2Step.sol";
  * Unstaking is subject to a 7-day cooldown to protect the protocol from stake-withdrawal
  * attacks immediately before a slash event.
  */
-contract VortexStaking is ReentrancyGuard, Ownable2Step {
+contract TraverseStaking is ReentrancyGuard, Ownable2Step {
     using SafeERC20 for IERC20;
 
     // ─────────────────────────────────────────────────────────────────────────
     // Constants
     // ─────────────────────────────────────────────────────────────────────────
 
-    /// @notice Minimum VTX stake required to register as an active solver.
+    /// @notice Minimum TRV stake required to register as an active solver.
     uint256 public constant SOLVER_MIN_STAKE = 10_000 * 10 ** 18;
 
     /// @notice Cooldown period before an unstake request can be withdrawn.
@@ -42,21 +42,21 @@ contract VortexStaking is ReentrancyGuard, Ownable2Step {
     // State
     // ─────────────────────────────────────────────────────────────────────────
 
-    /// @notice The VTX ERC-20 token.
-    IERC20 public immutable vtx;
+    /// @notice The TRV ERC-20 token.
+    IERC20 public immutable trv;
 
     /// @notice Address authorised to call distributeRevenue() (the Router).
     address public router;
 
-    /// @notice Accumulated reward per staked VTX unit (scaled by PRECISION).
+    /// @notice Accumulated reward per staked TRV unit (scaled by PRECISION).
     uint256 public rewardPerShareAccumulated;
 
-    /// @notice Total VTX currently staked across all users.
+    /// @notice Total TRV currently staked across all users.
     uint256 public totalStaked;
 
     // Per-staker accounting
     struct StakeInfo {
-        uint256 staked;               // VTX currently staked
+        uint256 staked;               // TRV currently staked
         uint256 rewardDebt;           // reward-per-share snapshot at last update
         uint256 pendingRewards;       // unclaimed rewards accumulated so far
         bool    isSolver;             // registered as active solver
@@ -98,7 +98,7 @@ contract VortexStaking is ReentrancyGuard, Ownable2Step {
     // ─────────────────────────────────────────────────────────────────────────
 
     modifier onlyRouter() {
-        require(msg.sender == router, "VortexStaking: caller is not router");
+        require(msg.sender == router, "TraverseStaking: caller is not router");
         _;
     }
 
@@ -107,12 +107,12 @@ contract VortexStaking is ReentrancyGuard, Ownable2Step {
     // ─────────────────────────────────────────────────────────────────────────
 
     /**
-     * @param _vtx   Address of the VTX token contract.
+     * @param _vtx   Address of the TRV token contract.
      * @param _owner Initial owner (will be transferred to Timelock post-deploy).
      */
     constructor(address _vtx, address _owner) Ownable(_owner) {
-        require(_vtx != address(0), "VortexStaking: zero vtx");
-        vtx = IERC20(_vtx);
+        require(_vtx != address(0), "TraverseStaking: zero trv");
+        trv = IERC20(_vtx);
     }
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -121,17 +121,17 @@ contract VortexStaking is ReentrancyGuard, Ownable2Step {
 
     /**
      * @notice Sets the authorised router address. Called once after Router deployment.
-     * @param _router Address of VortexRouter.
+     * @param _router Address of TraverseRouter.
      */
     function setRouter(address _router) external onlyOwner {
-        require(_router != address(0), "VortexStaking: zero router");
+        require(_router != address(0), "TraverseStaking: zero router");
         router = _router;
         emit RouterSet(_router);
     }
 
     /**
      * @notice Proposes a new reward token. Takes effect after REWARD_TOKEN_CHANGE_DELAY (2 days).
-     * @dev    FIX VTX-05: Two-step delayed change prevents mid-stream reward token swaps that
+     * @dev    FIX TRV-05: Two-step delayed change prevents mid-stream reward token swaps that
      *         would break pending reward accounting for existing stakers.
      * @param _newRewardToken ERC-20 contract address, or address(0) for native ETH.
      */
@@ -145,8 +145,8 @@ contract VortexStaking is ReentrancyGuard, Ownable2Step {
      * @notice Applies the pending reward token change after the 2-day delay has elapsed.
      */
     function applyRewardTokenChange() external onlyOwner {
-        require(rewardTokenChangeAvailableAt != 0, "VortexStaking: no change pending");
-        require(block.timestamp >= rewardTokenChangeAvailableAt, "VortexStaking: delay active");
+        require(rewardTokenChangeAvailableAt != 0, "TraverseStaking: no change pending");
+        require(block.timestamp >= rewardTokenChangeAvailableAt, "TraverseStaking: delay active");
         rewardToken               = pendingRewardToken;
         pendingRewardToken        = address(0);
         rewardTokenChangeAvailableAt = 0;
@@ -158,35 +158,35 @@ contract VortexStaking is ReentrancyGuard, Ownable2Step {
     // ─────────────────────────────────────────────────────────────────────────
 
     /**
-     * @notice Stakes `amount` VTX on behalf of the caller.
-     * @dev    Caller must have approved this contract to spend at least `amount` VTX.
-     * @param amount Amount of VTX to stake (18-decimal wei).
+     * @notice Stakes `amount` TRV on behalf of the caller.
+     * @dev    Caller must have approved this contract to spend at least `amount` TRV.
+     * @param amount Amount of TRV to stake (18-decimal wei).
      */
     function stake(uint256 amount) external nonReentrant {
-        require(amount > 0, "VortexStaking: zero amount");
+        require(amount > 0, "TraverseStaking: zero amount");
         _settleRewards(msg.sender);
 
         stakers[msg.sender].staked += amount;
         totalStaked += amount;
 
-        vtx.safeTransferFrom(msg.sender, address(this), amount);
+        trv.safeTransferFrom(msg.sender, address(this), amount);
         emit Staked(msg.sender, amount);
     }
 
     /**
-     * @notice Queues `amount` VTX for withdrawal after the 7-day cooldown.
+     * @notice Queues `amount` TRV for withdrawal after the 7-day cooldown.
      * @dev    Reduces the active stake immediately; tokens are locked until cooldown.
      *         If the user is a solver and remaining stake falls below the minimum,
      *         solver status is revoked automatically.
-     * @param amount Amount of VTX to unstake.
+     * @param amount Amount of TRV to unstake.
      */
     function unstake(uint256 amount) external nonReentrant {
         StakeInfo storage info = stakers[msg.sender];
-        require(amount > 0,              "VortexStaking: zero amount");
-        require(info.staked >= amount,   "VortexStaking: insufficient stake");
-        // FIX VTX-03: Prevent cooldown reset. Require existing queued withdrawal to be
+        require(amount > 0,              "TraverseStaking: zero amount");
+        require(info.staked >= amount,   "TraverseStaking: insufficient stake");
+        // FIX TRV-03: Prevent cooldown reset. Require existing queued withdrawal to be
         // claimed before queuing a new one, so earlier amounts are never delayed further.
-        require(info.unstakeAmount == 0, "VortexStaking: withdraw queued amount first");
+        require(info.unstakeAmount == 0, "TraverseStaking: withdraw queued amount first");
 
         _settleRewards(msg.sender);
 
@@ -211,14 +211,14 @@ contract VortexStaking is ReentrancyGuard, Ownable2Step {
      */
     function withdrawUnstaked() external nonReentrant {
         StakeInfo storage info = stakers[msg.sender];
-        require(info.unstakeAmount > 0, "VortexStaking: nothing to withdraw");
-        require(block.timestamp >= info.unstakeAvailableAt, "VortexStaking: cooldown active");
+        require(info.unstakeAmount > 0, "TraverseStaking: nothing to withdraw");
+        require(block.timestamp >= info.unstakeAvailableAt, "TraverseStaking: cooldown active");
 
         uint256 amount = info.unstakeAmount;
         info.unstakeAmount = 0;
         info.unstakeAvailableAt = 0;
 
-        vtx.safeTransfer(msg.sender, amount);
+        trv.safeTransfer(msg.sender, amount);
         emit Unstaked(msg.sender, amount);
     }
 
@@ -228,24 +228,24 @@ contract VortexStaking is ReentrancyGuard, Ownable2Step {
 
     /**
      * @notice Registers the caller as an active solver after staking the required amount.
-     * @dev    The caller must already have at least SOLVER_MIN_STAKE VTX staked.
-     *         Additional VTX can be staked in the same call by passing a non-zero `extraStake`.
-     * @param extraStake Additional VTX to stake on top of the existing balance (may be 0).
+     * @dev    The caller must already have at least SOLVER_MIN_STAKE TRV staked.
+     *         Additional TRV can be staked in the same call by passing a non-zero `extraStake`.
+     * @param extraStake Additional TRV to stake on top of the existing balance (may be 0).
      */
     function registerAsSolver(uint256 extraStake) external nonReentrant {
         if (extraStake > 0) {
             _settleRewards(msg.sender);
             stakers[msg.sender].staked += extraStake;
             totalStaked += extraStake;
-            vtx.safeTransferFrom(msg.sender, address(this), extraStake);
+            trv.safeTransferFrom(msg.sender, address(this), extraStake);
             emit Staked(msg.sender, extraStake);
         }
 
         require(
             stakers[msg.sender].staked >= SOLVER_MIN_STAKE,
-            "VortexStaking: insufficient stake for solver"
+            "TraverseStaking: insufficient stake for solver"
         );
-        require(!stakers[msg.sender].isSolver, "VortexStaking: already a solver");
+        require(!stakers[msg.sender].isSolver, "TraverseStaking: already a solver");
 
         stakers[msg.sender].isSolver = true;
         emit SolverRegistered(msg.sender);
@@ -255,7 +255,7 @@ contract VortexStaking is ReentrancyGuard, Ownable2Step {
      * @notice Voluntarily deregisters the caller as a solver.
      */
     function deregisterAsSolver() external {
-        require(stakers[msg.sender].isSolver, "VortexStaking: not a solver");
+        require(stakers[msg.sender].isSolver, "TraverseStaking: not a solver");
         stakers[msg.sender].isSolver = false;
         emit SolverDeregistered(msg.sender);
     }
@@ -276,14 +276,14 @@ contract VortexStaking is ReentrancyGuard, Ownable2Step {
      * @notice Slashes a misbehaving solver's stake.
      * @dev    Only callable by the owner (Timelock / governance).
      * @param solver    Address of the solver to slash.
-     * @param amount    Amount of staked VTX to seize.
-     * @param recipient Address that receives the slashed VTX (e.g., insurance fund).
+     * @param amount    Amount of staked TRV to seize.
+     * @param recipient Address that receives the slashed TRV (e.g., insurance fund).
      */
     function slash(address solver, uint256 amount, address recipient) external onlyOwner {
         StakeInfo storage info = stakers[solver];
-        require(info.isSolver, "VortexStaking: not a solver");
-        require(info.staked >= amount, "VortexStaking: slash exceeds stake");
-        require(recipient != address(0), "VortexStaking: zero recipient");
+        require(info.isSolver, "TraverseStaking: not a solver");
+        require(info.staked >= amount, "TraverseStaking: slash exceeds stake");
+        require(recipient != address(0), "TraverseStaking: zero recipient");
 
         _settleRewards(solver);
 
@@ -295,7 +295,7 @@ contract VortexStaking is ReentrancyGuard, Ownable2Step {
             emit SolverDeregistered(solver);
         }
 
-        vtx.safeTransfer(recipient, amount);
+        trv.safeTransfer(recipient, amount);
         emit SolverSlashed(solver, amount, recipient);
     }
 
@@ -305,8 +305,8 @@ contract VortexStaking is ReentrancyGuard, Ownable2Step {
 
     /**
      * @notice Distributes protocol revenue to stakers by advancing the reward-per-share
-     *         accumulator. Called exclusively by VortexRouter when fees are collected.
-     * @dev    FIX VTX-01: The Router already applies STAKING_SHARE_BPS (70%) before
+     *         accumulator. Called exclusively by TraverseRouter when fees are collected.
+     * @dev    FIX TRV-01: The Router already applies STAKING_SHARE_BPS (70%) before
      *         transferring `amount` here. We must NOT apply any share factor again —
      *         doing so would cause double-reduction and permanently lock the remainder.
      *         `amount` is forwarded in full to the reward accumulator.
@@ -328,7 +328,7 @@ contract VortexStaking is ReentrancyGuard, Ownable2Step {
         _settleRewards(msg.sender);
 
         uint256 pending = stakers[msg.sender].pendingRewards;
-        require(pending > 0, "VortexStaking: no rewards");
+        require(pending > 0, "TraverseStaking: no rewards");
 
         stakers[msg.sender].pendingRewards = 0;
 
@@ -368,7 +368,7 @@ contract VortexStaking is ReentrancyGuard, Ownable2Step {
     function _transferReward(address recipient, uint256 amount) internal {
         if (rewardToken == address(0)) {
             (bool ok, ) = payable(recipient).call{value: amount}("");
-            require(ok, "VortexStaking: ETH transfer failed");
+            require(ok, "TraverseStaking: ETH transfer failed");
         } else {
             IERC20(rewardToken).safeTransfer(recipient, amount);
         }

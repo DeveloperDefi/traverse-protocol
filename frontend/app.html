@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Vortex Protocol — DApp</title>
+<title>Traverse Protocol — DApp</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
 <style>
   :root {
@@ -188,7 +188,7 @@
 
 <!-- NAV -->
 <nav>
-  <div class="logo">⚡ <span>Vortex</span> Protocol</div>
+  <div class="logo">⚡ <span>Traverse</span> Protocol</div>
   <div class="nav-right">
     <div class="chain-badge" id="chainBadge">— Network</div>
     <button id="connectBtn" onclick="connectWallet()">Connect Wallet</button>
@@ -205,8 +205,8 @@
       <div class="wallet-addr" id="walletAddr">—</div>
     </div>
     <div style="text-align:right">
-      <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">VTX BALANCE</div>
-      <div class="wallet-bal" id="vtxBalance">— VTX</div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">TRV BALANCE</div>
+      <div class="wallet-bal" id="vtxBalance">— TRV</div>
     </div>
   </div>
 
@@ -222,11 +222,11 @@
     </div>
     <div class="stat-card">
       <div class="stat-label">Min Solver Stake</div>
-      <div class="stat-value teal">10,000 VTX</div>
+      <div class="stat-value teal">10,000 TRV</div>
     </div>
     <div class="stat-card">
       <div class="stat-label">Total Supply</div>
-      <div class="stat-value purple">1B VTX</div>
+      <div class="stat-value purple">1B TRV</div>
     </div>
   </div>
 
@@ -305,12 +305,12 @@
 const CONTRACTS = {
   31337: { // Hardhat local
     router:  "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
-    vtx:     "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+    trv:     "0x5FbDB2315678afecb367f032d93F642f64180aa3",
     staking: "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
   },
   84532: { // Base Sepolia — fill after testnet deploy
     router:  "",
-    vtx:     "",
+    trv:     "",
     staking: "",
   },
 };
@@ -341,7 +341,7 @@ const STATUS_CLASS  = ["pending","filled","cancelled","expired"];
 // State
 // ─────────────────────────────────────────────────────────────────────────────
 let provider, signer, chainId, routerContract, vtxContract;
-let myIntentHashes = JSON.parse(localStorage.getItem("vortex_intents") || "[]");
+let myIntentHashes = JSON.parse(localStorage.getItem("traverse_intents") || "[]");
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Wallet connection
@@ -369,11 +369,11 @@ async function connectWallet() {
     document.getElementById("submitBtn").textContent   = "Sign & Submit Intent";
 
     const addrs = CONTRACTS[chainId];
-    if (addrs?.vtx) {
-      vtxContract    = new ethers.Contract(addrs.vtx,    ERC20_ABI,  signer);
+    if (addrs?.trv) {
+      vtxContract    = new ethers.Contract(addrs.trv,    ERC20_ABI,  signer);
       routerContract = new ethers.Contract(addrs.router, ROUTER_ABI, signer);
       const bal = await vtxContract.balanceOf(addr);
-      document.getElementById("vtxBalance").textContent = parseFloat(ethers.formatEther(bal)).toLocaleString() + " VTX";
+      document.getElementById("vtxBalance").textContent = parseFloat(ethers.formatEther(bal)).toLocaleString() + " TRV";
     }
 
     await loadMyIntents();
@@ -431,7 +431,7 @@ async function submitIntent() {
     // Build EIP-712 signature
     showStatus("info", "Sign the intent in MetaMask...");
     const domain = {
-      name: "VortexRouter",
+      name: "TraverseRouter",
       version: "1",
       chainId: chainId,
       verifyingContract: addrs.router,
@@ -489,7 +489,7 @@ async function submitIntent() {
 
     if (intentHash) {
       myIntentHashes.unshift(intentHash);
-      localStorage.setItem("vortex_intents", JSON.stringify(myIntentHashes.slice(0, 50)));
+      localStorage.setItem("traverse_intents", JSON.stringify(myIntentHashes.slice(0, 50)));
     }
 
     showStatus("ok", `✅ Intent submitted! Tx: ${receipt.hash.slice(0,10)}...`);

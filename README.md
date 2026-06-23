@@ -1,19 +1,19 @@
-# ⚡ Vortex Protocol (VTX)
+# ⚡ Traverse Protocol (TRV)
 
 > **Conectando liquidez em um único fluxo.**
 
-Vortex is a cross-chain liquidity routing protocol with intent-based execution and competitive solver auctions. Users submit signed intents, solvers compete to provide the best execution, and VTX token coordinates the network.
+Traverse is a cross-chain liquidity routing protocol with intent-based execution and competitive solver auctions. Users submit signed intents, solvers compete to provide the best execution, and TRV token coordinates the network.
 
 ---
 
-## 🔍 What Problem Does Vortex Solve?
+## 🔍 What Problem Does Traverse Solve?
 
 Liquidity in DeFi is fragmented across 60+ blockchains and hundreds of DEXs. Users face:
 - High slippage from fragmented order books
 - Manual bridge complexity
 - Poor execution with no competition
 
-**Vortex unifies this into a single flow:** submit an intent, get the best cross-chain execution automatically.
+**Traverse unifies this into a single flow:** submit an intent, get the best cross-chain execution automatically.
 
 ---
 
@@ -24,24 +24,24 @@ User → Signs Intent (EIP-712) → Solver Auction → Best Solver Executes → 
 ```
 
 1. **User** submits a signed intent: "I want X token on chain Y, minimum Z output"
-2. **Solver Network** (VTX-staked entities) compete in a Dutch auction
+2. **Solver Network** (TRV-staked entities) compete in a Dutch auction
 3. **Winning Solver** executes the cross-chain transaction atomically
 4. **Settlement** delivers tokens to user; protocol collects 0.05% fee
 
 ---
 
-## 🪙 VTX Token
+## 🪙 TRV Token
 
 | Property | Value |
 |---|---|
 | Standard | ERC-20 + ERC20Permit + ERC20Votes |
-| Total Supply | 1,000,000,000 VTX (fixed, no mint) |
+| Total Supply | 1,000,000,000 TRV (fixed, no mint) |
 | Networks | Base, Arbitrum (launch) → Multi-chain |
 
 **4 Pillars of Utility:**
-- **Solver Staking** — Minimum 10,000 VTX to register as solver (slashable collateral)
-- **Governance** — 1 VTX = 1 vote; controls fee parameters, treasury, upgrades
-- **Fee Discount** — Up to 40% off routing fees by holding VTX
+- **Solver Staking** — Minimum 10,000 TRV to register as solver (slashable collateral)
+- **Governance** — 1 TRV = 1 vote; controls fee parameters, treasury, upgrades
+- **Fee Discount** — Up to 40% off routing fees by holding TRV
 - **Revenue Sharing** — 70% of all protocol fees distributed to stakers
 
 ---
@@ -49,20 +49,20 @@ User → Signs Intent (EIP-712) → Solver Auction → Best Solver Executes → 
 ## 📁 Repository Structure
 
 ```
-vortex-protocol/
+traverse-protocol/
 ├── contracts/
-│   ├── VTX.sol                # ERC-20 token (fixed 1B supply)
-│   ├── VortexIntent.sol       # Intent structure + EIP-712 signing
-│   ├── VortexRouter.sol       # Core routing + solver competition
-│   ├── VortexStaking.sol      # Staking + revenue distribution
-│   ├── VortexGovernor.sol     # On-chain governance
-│   ├── VortexTimelock.sol     # 48h timelock for governance actions
-│   └── VortexTreasury.sol     # Protocol treasury (governance-controlled)
+│   ├── TRV.sol                # ERC-20 token (fixed 1B supply)
+│   ├── TraverseIntent.sol       # Intent structure + EIP-712 signing
+│   ├── TraverseRouter.sol       # Core routing + solver competition
+│   ├── TraverseStaking.sol      # Staking + revenue distribution
+│   ├── TraverseGovernor.sol     # On-chain governance
+│   ├── TraverseTimelock.sol     # 48h timelock for governance actions
+│   └── TraverseTreasury.sol     # Protocol treasury (governance-controlled)
 ├── scripts/
 │   └── deploy.js              # Hardhat deployment script
 ├── docs/
-│   ├── Vortex_Whitepaper_v1.0.pdf
-│   └── Vortex_Tokenomics_VTX.pdf
+│   ├── Traverse_Whitepaper_v1.0.pdf
+│   └── Traverse_Tokenomics_VTX.pdf
 ├── hardhat.config.js
 ├── package.json
 └── README.md
@@ -131,7 +131,7 @@ npm run deploy:base
 
 ## 📊 Tokenomics
 
-| Category | % | VTX | Cliff | Vesting |
+| Category | % | TRV | Cliff | Vesting |
 |---|---|---|---|---|
 | Community & Incentives | 35% | 350,000,000 | — | 4 years gradual |
 | Team & Founders | 18% | 180,000,000 | 12 months | 36 months linear |
@@ -158,35 +158,35 @@ npm run deploy:base
 
 ## ⚖️ Competitive Landscape
 
-| Feature | Vortex ✓ | 1inch | Jupiter | LiFi | CoW |
+| Feature | Traverse ✓ | 1inch | Jupiter | LiFi | CoW |
 |---|---|---|---|---|---|
 | Native cross-chain | ✓ | Partial | ✗ | ✓ | ✗ |
 | Solver competition | ✓ | ✗ | ✗ | ✗ | ✓ |
 | Intent-based | ✓ | ✗ | ✗ | ✗ | ✓ |
 | Multi-chain launch | ✓ | ✗ | Solana only | ✓ | ✗ |
-| VTX revenue sharing | ✓ | ✗ | ✗ | ✗ | Partial |
+| TRV revenue sharing | ✓ | ✗ | ✗ | ✗ | Partial |
 
 ---
 
 ## 📄 Documentation
 
-- [Whitepaper v1.0](docs/Vortex_Whitepaper_v1.0.pdf)
-- [Tokenomics](docs/Vortex_Tokenomics_VTX.pdf)
+- [Whitepaper v1.0](docs/Traverse_Whitepaper_v1.0.pdf)
+- [Tokenomics](docs/Traverse_Tokenomics_VTX.pdf)
 
 ---
 
 ## ⚠️ Disclaimer
 
-This repository is for informational and development purposes only. VTX tokens represent utility and governance rights within the Vortex Protocol. Nothing in this repository constitutes financial, legal, or investment advice. Investments in digital assets carry substantial risk including total loss of capital. Consult qualified legal and financial advisors before making any investment decisions.
+This repository is for informational and development purposes only. TRV tokens represent utility and governance rights within the Traverse Protocol. Nothing in this repository constitutes financial, legal, or investment advice. Investments in digital assets carry substantial risk including total loss of capital. Consult qualified legal and financial advisors before making any investment decisions.
 
 ---
 
 ## 📬 Contact
 
-- Website: [vtxprotocol.io](https://vtxprotocol.io) *(coming soon)*
-- Email: hello@vtxprotocol.io
-- Twitter: [@VortexProtocol](https://twitter.com/VortexProtocol)
+- Website: [traverseprotocol.io](https://traverseprotocol.io) *(coming soon)*
+- Email: hello@traverseprotocol.io
+- Twitter: [@TraverseProtocol](https://twitter.com/TraverseProtocol)
 
 ---
 
-*Built with ❤️ by the Vortex Protocol team*
+*Built with ❤️ by the Traverse Protocol team*

@@ -1,13 +1,13 @@
 /**
- * Vortex VTX Protocol — Hardhat Deployment Script
+ * Traverse TRV Protocol — Hardhat Deployment Script
  *
  * Deployment order:
- *   1. VTX token
- *   2. VortexTimelock
- *   3. VortexGovernor  (requires VTX + Timelock)
- *   4. VortexStaking   (requires VTX)
- *   5. VortexTreasury
- *   6. VortexRouter    (requires Staking + Treasury)
+ *   1. TRV token
+ *   2. TraverseTimelock
+ *   3. TraverseGovernor  (requires TRV + Timelock)
+ *   4. TraverseStaking   (requires TRV)
+ *   5. TraverseTreasury
+ *   6. TraverseRouter    (requires Staking + Treasury)
  *   7. Wire contracts  (setRouter on Staking, etc.)
  *   8. Transfer ownership of Router, Staking, Treasury → Timelock
  *   9. Configure Timelock roles (Governor as proposer, zero as executor)
@@ -18,7 +18,7 @@ const { ethers } = require("hardhat");
 async function main() {
   const [deployer] = await ethers.getSigners();
 
-  console.log("Deploying Vortex VTX Protocol...");
+  console.log("Deploying Traverse TRV Protocol...");
   console.log("Deployer:", deployer.address);
   console.log(
     "Balance:",
@@ -27,20 +27,20 @@ async function main() {
   );
 
   // ─────────────────────────────────────────────────────────────────────────
-  // 1. Deploy VTX Token
+  // 1. Deploy TRV Token
   // ─────────────────────────────────────────────────────────────────────────
-  console.log("1. Deploying VTX token...");
-  const VTX = await ethers.getContractFactory("VTX");
-  const vtx = await VTX.deploy(deployer.address); // full supply → deployer
-  await vtx.waitForDeployment();
-  const vtxAddress = await vtx.getAddress();
-  console.log("   VTX deployed to:", vtxAddress);
+  console.log("1. Deploying TRV token...");
+  const TRV = await ethers.getContractFactory("TRV");
+  const trv = await TRV.deploy(deployer.address); // full supply → deployer
+  await trv.waitForDeployment();
+  const vtxAddress = await trv.getAddress();
+  console.log("   TRV deployed to:", vtxAddress);
 
   // ─────────────────────────────────────────────────────────────────────────
-  // 2. Deploy VortexTimelock
+  // 2. Deploy TraverseTimelock
   // ─────────────────────────────────────────────────────────────────────────
-  console.log("\n2. Deploying VortexTimelock...");
-  const VortexTimelock = await ethers.getContractFactory("VortexTimelock");
+  console.log("\n2. Deploying TraverseTimelock...");
+  const TraverseTimelock = await ethers.getContractFactory("TraverseTimelock");
 
   // Temporary: deployer is proposer during setup; replaced by Governor below.
   const timelockProposers  = [deployer.address];
@@ -49,52 +49,52 @@ async function main() {
   // Deployer holds admin initially to configure roles, then renounces.
   const timelockAdmin      = deployer.address;
 
-  const timelock = await VortexTimelock.deploy(
+  const timelock = await TraverseTimelock.deploy(
     timelockProposers,
     timelockExecutors,
     timelockAdmin
   );
   await timelock.waitForDeployment();
   const timelockAddress = await timelock.getAddress();
-  console.log("   VortexTimelock deployed to:", timelockAddress);
+  console.log("   TraverseTimelock deployed to:", timelockAddress);
 
   // ─────────────────────────────────────────────────────────────────────────
-  // 3. Deploy VortexGovernor
+  // 3. Deploy TraverseGovernor
   // ─────────────────────────────────────────────────────────────────────────
-  console.log("\n3. Deploying VortexGovernor...");
-  const VortexGovernor = await ethers.getContractFactory("VortexGovernor");
-  const governor = await VortexGovernor.deploy(vtxAddress, timelockAddress);
+  console.log("\n3. Deploying TraverseGovernor...");
+  const TraverseGovernor = await ethers.getContractFactory("TraverseGovernor");
+  const governor = await TraverseGovernor.deploy(vtxAddress, timelockAddress);
   await governor.waitForDeployment();
   const governorAddress = await governor.getAddress();
-  console.log("   VortexGovernor deployed to:", governorAddress);
+  console.log("   TraverseGovernor deployed to:", governorAddress);
 
   // ─────────────────────────────────────────────────────────────────────────
-  // 4. Deploy VortexStaking
+  // 4. Deploy TraverseStaking
   // ─────────────────────────────────────────────────────────────────────────
-  console.log("\n4. Deploying VortexStaking...");
-  const VortexStaking = await ethers.getContractFactory("VortexStaking");
-  const staking = await VortexStaking.deploy(vtxAddress, deployer.address);
+  console.log("\n4. Deploying TraverseStaking...");
+  const TraverseStaking = await ethers.getContractFactory("TraverseStaking");
+  const staking = await TraverseStaking.deploy(vtxAddress, deployer.address);
   await staking.waitForDeployment();
   const stakingAddress = await staking.getAddress();
-  console.log("   VortexStaking deployed to:", stakingAddress);
+  console.log("   TraverseStaking deployed to:", stakingAddress);
 
   // ─────────────────────────────────────────────────────────────────────────
-  // 5. Deploy VortexTreasury
+  // 5. Deploy TraverseTreasury
   // ─────────────────────────────────────────────────────────────────────────
-  console.log("\n5. Deploying VortexTreasury...");
-  const VortexTreasury = await ethers.getContractFactory("VortexTreasury");
-  const treasury = await VortexTreasury.deploy(deployer.address);
+  console.log("\n5. Deploying TraverseTreasury...");
+  const TraverseTreasury = await ethers.getContractFactory("TraverseTreasury");
+  const treasury = await TraverseTreasury.deploy(deployer.address);
   await treasury.waitForDeployment();
   const treasuryAddress = await treasury.getAddress();
-  console.log("   VortexTreasury deployed to:", treasuryAddress);
+  console.log("   TraverseTreasury deployed to:", treasuryAddress);
 
   // ─────────────────────────────────────────────────────────────────────────
-  // 6. Deploy VortexRouter
+  // 6. Deploy TraverseRouter
   //    Operations wallet: deployer for now (update via governance post-launch)
   // ─────────────────────────────────────────────────────────────────────────
-  console.log("\n6. Deploying VortexRouter...");
-  const VortexRouter = await ethers.getContractFactory("VortexRouter");
-  const router = await VortexRouter.deploy(
+  console.log("\n6. Deploying TraverseRouter...");
+  const TraverseRouter = await ethers.getContractFactory("TraverseRouter");
+  const router = await TraverseRouter.deploy(
     stakingAddress,
     treasuryAddress,
     deployer.address, // opsWallet — replace with multisig post-launch
@@ -102,7 +102,7 @@ async function main() {
   );
   await router.waitForDeployment();
   const routerAddress = await router.getAddress();
-  console.log("   VortexRouter deployed to:", routerAddress);
+  console.log("   TraverseRouter deployed to:", routerAddress);
 
   // ─────────────────────────────────────────────────────────────────────────
   // 7. Wire Contracts
@@ -176,9 +176,9 @@ async function main() {
   // Summary
   // ─────────────────────────────────────────────────────────────────────────
   console.log("\n═══════════════════════════════════════════════");
-  console.log("  Vortex VTX Protocol — Deployment Complete");
+  console.log("  Traverse TRV Protocol — Deployment Complete");
   console.log("═══════════════════════════════════════════════");
-  console.log("  VTX Token     :", vtxAddress);
+  console.log("  TRV Token     :", vtxAddress);
   console.log("  Timelock      :", timelockAddress);
   console.log("  Governor      :", governorAddress);
   console.log("  Staking       :", stakingAddress);
@@ -188,7 +188,7 @@ async function main() {
 
   // Persist addresses for verification / integration
   const addresses = {
-    vtx:      vtxAddress,
+    trv:      vtxAddress,
     timelock: timelockAddress,
     governor: governorAddress,
     staking:  stakingAddress,

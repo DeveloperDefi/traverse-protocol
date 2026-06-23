@@ -1,15 +1,15 @@
-# Vortex Protocol — Immunefi Bug Bounty Program
+# Traverse Protocol — Immunefi Bug Bounty Program
 
 > **Status:** Active from testnet launch (Q3 2026)
-> **Platform:** immunefi.com/bounty/vortex-protocol
+> **Platform:** immunefi.com/bounty/traverse-protocol
 
 ---
 
 ## Overview
 
-The Vortex Protocol bug bounty program rewards security researchers who responsibly disclose vulnerabilities in our smart contracts. We take security seriously — and we pay competitively.
+The Traverse Protocol bug bounty program rewards security researchers who responsibly disclose vulnerabilities in our smart contracts. We take security seriously — and we pay competitively.
 
-All rewards are paid in **VTX tokens** from the Community & Incentives pool.
+All rewards are paid in **TRV tokens** from the Community & Incentives pool.
 
 ---
 
@@ -19,10 +19,10 @@ All rewards are paid in **VTX tokens** from the Community & Incentives pool.
 
 | Severity | Reward |
 |---|---|
-| 🔴 Critical | Up to 100,000 VTX |
-| 🟠 High | Up to 30,000 VTX |
-| 🟡 Medium | Up to 10,000 VTX |
-| 🔵 Low | Up to 2,000 VTX |
+| 🔴 Critical | Up to 100,000 TRV |
+| 🟠 High | Up to 30,000 TRV |
+| 🟡 Medium | Up to 10,000 TRV |
+| 🔵 Low | Up to 2,000 TRV |
 
 ### Severity Definitions
 
@@ -56,13 +56,13 @@ Examples:
 
 | Asset | Type | Address |
 |---|---|---|
-| VTX.sol | Smart Contract | TBD (post-mainnet) |
-| VortexRouter.sol | Smart Contract | TBD |
-| VortexStaking.sol | Smart Contract | TBD |
-| VortexGovernor.sol | Smart Contract | TBD |
-| VortexTimelock.sol | Smart Contract | TBD |
-| VortexTreasury.sol | Smart Contract | TBD |
-| VortexVesting.sol | Smart Contract | TBD |
+| TRV.sol | Smart Contract | TBD (post-mainnet) |
+| TraverseRouter.sol | Smart Contract | TBD |
+| TraverseStaking.sol | Smart Contract | TBD |
+| TraverseGovernor.sol | Smart Contract | TBD |
+| TraverseTimelock.sol | Smart Contract | TBD |
+| TraverseTreasury.sol | Smart Contract | TBD |
+| TraverseVesting.sol | Smart Contract | TBD |
 
 ### Out of Scope
 
@@ -103,8 +103,8 @@ All submissions must include:
 4. Working PoC (Hardhat test preferred):
 
 ```bash
-git clone https://github.com/Estivalett/vortex-protocol
-cd vortex-protocol && npm install
+git clone https://github.com/Estivalett/traverse-protocol
+cd traverse-protocol && npm install
 npx hardhat test test/your-poc.js
 ```
 
@@ -120,8 +120,8 @@ We maintain a public Hall of Fame for researchers who identify and responsibly d
 
 ## Contact
 
-- **Immunefi:** immunefi.com/bounty/vortex-protocol *(link active from Q3 2026)*
-- **Direct (Critical only):** security@vtxprotocol.io
+- **Immunefi:** immunefi.com/bounty/traverse-protocol *(link active from Q3 2026)*
+- **Direct (Critical only):** security@traverseprotocol.io
 - **PGP Key:** available on request
 
 For questions about scope, contact us in Discord `#security` before submitting.

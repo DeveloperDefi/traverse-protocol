@@ -9,20 +9,20 @@ import "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFractio
 import "@openzeppelin/contracts/governance/extensions/GovernorTimelockControl.sol";
 
 /**
- * @title VortexGovernor — On-chain Governance for the Vortex Protocol
- * @notice Allows VTX token holders to propose and vote on protocol parameter changes,
+ * @title TraverseGovernor — On-chain Governance for the Traverse Protocol
+ * @notice Allows TRV token holders to propose and vote on protocol parameter changes,
  *         contract upgrades, treasury disbursements, and solver slashing via the
- *         VortexTimelock executor.
+ *         TraverseTimelock executor.
  *
  * Governance parameters:
  *   - Voting delay:  1 day   (time between proposal creation and voting start)
  *   - Voting period: 7 days  (window during which votes are accepted)
- *   - Proposal threshold: 1,000,000 VTX (1% of fixed 1B supply)
+ *   - Proposal threshold: 1,000,000 TRV (1% of fixed 1B supply)
  *   - Quorum: 4% of total supply (using GovernorVotesQuorumFraction with fraction = 4)
  *
- * VTX must implement IVotes (via ERC20Votes) for delegation and vote tracking.
+ * TRV must implement IVotes (via ERC20Votes) for delegation and vote tracking.
  */
-contract VortexGovernor is
+contract TraverseGovernor is
     Governor,
     GovernorSettings,
     GovernorCountingSimple,
@@ -34,7 +34,7 @@ contract VortexGovernor is
     // Constants
     // ─────────────────────────────────────────────────────────────────────────
 
-    /// @notice Minimum VTX needed to create a proposal (1% of 1B = 1,000,000 VTX).
+    /// @notice Minimum TRV needed to create a proposal (1% of 1B = 1,000,000 TRV).
     uint256 public constant PROPOSAL_THRESHOLD_TOKENS = 1_000_000 * 10 ** 18;
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -42,11 +42,11 @@ contract VortexGovernor is
     // ─────────────────────────────────────────────────────────────────────────
 
     /**
-     * @param _token    IVotes-compatible VTX token (ERC20Votes).
-     * @param _timelock VortexTimelock controller.
+     * @param _token    IVotes-compatible TRV token (ERC20Votes).
+     * @param _timelock TraverseTimelock controller.
      */
     constructor(IVotes _token, TimelockController _timelock)
-        Governor("VortexGovernor")
+        Governor("TraverseGovernor")
         GovernorSettings(
             1 days,   // votingDelay:  1 day in seconds
             7 days,   // votingPeriod: 7 days in seconds

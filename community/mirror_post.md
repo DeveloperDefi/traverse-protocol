@@ -1,6 +1,6 @@
-# Introducing Vortex Protocol: Intent-Based Cross-Chain Liquidity
+# Introducing Traverse Protocol: Intent-Based Cross-Chain Liquidity
 
-*Published on Mirror.xyz by Vortex Protocol Team*
+*Published on Mirror.xyz by Traverse Protocol Team*
 
 ---
 
@@ -16,13 +16,13 @@ You want ETH on Base but hold USDC on Arbitrum. Here's what you currently face:
 
 Total friction: 2–4% of your trade, plus time, plus mental overhead. For a $50,000 transaction, that's $1,000–$2,000 destroyed in the process.
 
-This is not a technical limitation. It is a design failure. And Vortex Protocol is here to fix it.
+This is not a technical limitation. It is a design failure. And Traverse Protocol is here to fix it.
 
 ---
 
-## What Is Vortex Protocol?
+## What Is Traverse Protocol?
 
-Vortex is a cross-chain liquidity routing protocol with intent-based execution and competitive solver auctions.
+Traverse is a cross-chain liquidity routing protocol with intent-based execution and competitive solver auctions.
 
 Instead of telling the protocol *how* to execute your trade, you tell it *what you want*. You sign an intent:
 
@@ -43,13 +43,13 @@ Users create a signed EIP-712 intent specifying:
 - Output token and minimum acceptable amount (on the destination chain)
 - Deadline
 
-The user signs this off-chain and submits it on-chain to VortexRouter, which locks their input tokens.
+The user signs this off-chain and submits it on-chain to TraverseRouter, which locks their input tokens.
 
 ### 2. Solver Auction
 
-Registered solvers — entities that have staked at least 10,000 VTX as collateral — monitor the intent mempool. They compete to fill intents by calling `fillIntent()` with their offered output amount.
+Registered solvers — entities that have staked at least 10,000 TRV as collateral — monitor the intent mempool. They compete to fill intents by calling `fillIntent()` with their offered output amount.
 
-The solver that offers ≥ minOutput and calls first wins. Their staked VTX serves as slashable collateral: misbehave, and governance can seize it.
+The solver that offers ≥ minOutput and calls first wins. Their staked TRV serves as slashable collateral: misbehave, and governance can seize it.
 
 ### 3. Settlement
 
@@ -60,21 +60,21 @@ Upon fill:
 
 ---
 
-## The VTX Token
+## The TRV Token
 
-VTX is the coordination token of the Vortex Protocol network.
+TRV is the coordination token of the Traverse Protocol network.
 
-**Fixed supply of 1,000,000,000 VTX — no mint function exists.**
+**Fixed supply of 1,000,000,000 TRV — no mint function exists.**
 
-VTX has four real utility pillars:
+TRV has four real utility pillars:
 
-**Solver Staking.** To participate as a solver, entities must stake a minimum of 10,000 VTX. This collateral is slashable by governance in cases of provable misbehavior, aligning solver incentives with user outcomes.
+**Solver Staking.** To participate as a solver, entities must stake a minimum of 10,000 TRV. This collateral is slashable by governance in cases of provable misbehavior, aligning solver incentives with user outcomes.
 
-**Revenue Sharing.** 70% of all protocol fees are distributed proportionally to VTX stakers. As protocol volume grows, staking rewards grow with it. This is real economic value, not inflationary emissions.
+**Revenue Sharing.** 70% of all protocol fees are distributed proportionally to TRV stakers. As protocol volume grows, staking rewards grow with it. This is real economic value, not inflationary emissions.
 
-**Governance.** VTX holders vote on protocol parameters: fee levels, treasury allocation, solver slash conditions, and upgrades. All governance actions pass through a 48-hour Timelock, giving the community time to react to any proposal.
+**Governance.** TRV holders vote on protocol parameters: fee levels, treasury allocation, solver slash conditions, and upgrades. All governance actions pass through a 48-hour Timelock, giving the community time to react to any proposal.
 
-**Fee Discounts.** VTX holders receive up to 40% off protocol fees for their own swaps.
+**Fee Discounts.** TRV holders receive up to 40% off protocol fees for their own swaps.
 
 ---
 
@@ -82,13 +82,13 @@ VTX has four real utility pillars:
 
 | Category | Allocation | Amount |
 |---|---|---|
-| Community & Incentives | 35% | 350,000,000 VTX |
-| Protocol Treasury | 20% | 200,000,000 VTX |
-| Team & Founders | 18% | 180,000,000 VTX |
-| Seed Investors | 8% | 80,000,000 VTX |
-| Series A | 7% | 70,000,000 VTX |
-| Initial DEX Liquidity | 7% | 70,000,000 VTX |
-| Airdrop & Early Users | 5% | 50,000,000 VTX |
+| Community & Incentives | 35% | 350,000,000 TRV |
+| Protocol Treasury | 20% | 200,000,000 TRV |
+| Team & Founders | 18% | 180,000,000 TRV |
+| Seed Investors | 8% | 80,000,000 TRV |
+| Series A | 7% | 70,000,000 TRV |
+| Initial DEX Liquidity | 7% | 70,000,000 TRV |
+| Airdrop & Early Users | 5% | 50,000,000 TRV |
 
 Team tokens are subject to a 12-month cliff followed by 36 months of linear vesting. No one dumps on you.
 
@@ -121,7 +121,7 @@ The contracts are already deployed on testnet. We invite the community to review
 Public testnet launch on Base Sepolia and Arbitrum Sepolia. Independent security audit. Bug bounty program live on Immunefi.
 
 **Q4 2026 — Mainnet**
-Mainnet deployment on Base and Arbitrum. DEX liquidity seeded. VTX airdrop to early testnet users.
+Mainnet deployment on Base and Arbitrum. DEX liquidity seeded. TRV airdrop to early testnet users.
 
 **Q1–Q2 2027 — Expansion**
 Solana and BSC integration. Target: $100M+ monthly routed volume.
@@ -135,7 +135,7 @@ CEX listings. V2 protocol with permissionless solver registration. Global expans
 
 Everything is public. No black boxes.
 
-- **GitHub:** https://github.com/Estivalett/vortex-protocol
+- **GitHub:** https://github.com/Estivalett/traverse-protocol
 - **Whitepaper:** in `/docs` folder of the repository
 - **Tokenomics:** in `/docs` folder of the repository
 
@@ -145,15 +145,15 @@ Read the contracts. Audit the math. We welcome scrutiny.
 
 ## Join Us
 
-The Vortex Protocol is being built for a future where cross-chain liquidity is frictionless, competitive, and community-owned.
+The Traverse Protocol is being built for a future where cross-chain liquidity is frictionless, competitive, and community-owned.
 
-- **Website:** vtxprotocol.io *(coming soon)*
-- **Twitter:** [@VortexProtocol](https://twitter.com/VortexProtocol)
-- **GitHub:** [Estivalett/vortex-protocol](https://github.com/Estivalett/vortex-protocol)
-- **Email:** hello@vtxprotocol.io
+- **Website:** traverseprotocol.io *(coming soon)*
+- **Twitter:** [@TraverseProtocol](https://twitter.com/TraverseProtocol)
+- **GitHub:** [Estivalett/traverse-protocol](https://github.com/Estivalett/traverse-protocol)
+- **Email:** hello@traverseprotocol.io
 
-If you're a solver, liquidity provider, or developer who wants to build on top of Vortex — reach out. We're at the beginning of something real.
+If you're a solver, liquidity provider, or developer who wants to build on top of Traverse — reach out. We're at the beginning of something real.
 
 ---
 
-*Vortex Protocol is in development. Contracts are unaudited. Do not use in production without a full security audit. Nothing in this post constitutes financial or investment advice.*
+*Traverse Protocol is in development. Contracts are unaudited. Do not use in production without a full security audit. Nothing in this post constitutes financial or investment advice.*

@@ -1,11 +1,11 @@
-# Vortex Protocol — Guia de Publicação
+# Traverse Protocol — Guia de Publicação
 
 ## 1. GitHub — Publicar o código
 
 ### Passo 1: Criar o repositório no GitHub
 1. Acesse https://github.com/new
 2. Preencha:
-   - **Repository name:** `vortex-protocol`
+   - **Repository name:** `traverse-protocol`
    - **Description:** `Cross-chain liquidity routing protocol with intent-based execution and solver auctions`
    - **Visibility:** Public ✅
    - **NÃO** marque "Initialize this repository with a README" (já temos um)
@@ -16,10 +16,10 @@
 Abra o Terminal, navegue até a pasta do projeto e rode:
 
 ```bash
-cd "/Users/nathanaelestivalett/Documents/Claude/Projects/Vortex VTX"
+cd "/Users/nathanaelestivalett/Documents/Claude/Projects/Traverse TRV"
 
 # Substitua SEU_USUARIO pelo seu username do GitHub
-git remote add origin https://github.com/SEU_USUARIO/vortex-protocol.git
+git remote add origin https://github.com/SEU_USUARIO/traverse-protocol.git
 git push -u origin main
 ```
 
@@ -27,7 +27,7 @@ Será pedido seu username e password (use um **Personal Access Token** como pass
 - Crie em: https://github.com/settings/tokens/new
 - Permissões necessárias: `repo` (Full control)
 
-Pronto — seu repo estará em: `https://github.com/SEU_USUARIO/vortex-protocol`
+Pronto — seu repo estará em: `https://github.com/SEU_USUARIO/traverse-protocol`
 
 ---
 
@@ -37,7 +37,7 @@ Pronto — seu repo estará em: `https://github.com/SEU_USUARIO/vortex-protocol`
 
 #### A) Instalar dependências do projeto
 ```bash
-cd "/Users/nathanaelestivalett/Documents/Claude/Projects/Vortex VTX"
+cd "/Users/nathanaelestivalett/Documents/Claude/Projects/Traverse TRV"
 npm install
 ```
 
@@ -55,7 +55,7 @@ Você pode usar MetaMask para pegar sua chave privada:
 
 #### E) Configurar .env
 ```bash
-cd "/Users/nathanaelestivalett/Documents/Claude/Projects/Vortex VTX"
+cd "/Users/nathanaelestivalett/Documents/Claude/Projects/Traverse TRV"
 cp .env.example .env
 # Abra o .env e preencha:
 # PRIVATE_KEY=sua_chave_sem_0x
@@ -83,17 +83,17 @@ npx hardhat verify --network base-sepolia ENDERECO_DO_VTX
 ## 3. Whitepaper Online
 
 Os PDFs já estão na pasta `docs/`:
-- `docs/Vortex_Whitepaper_v1.0.pdf`
-- `docs/Vortex_Tokenomics_VTX.pdf`
+- `docs/Traverse_Whitepaper_v1.0.pdf`
+- `docs/Traverse_Tokenomics_VTX.pdf`
 
 Após o push para o GitHub, eles ficam acessíveis em:
 ```
-https://github.com/SEU_USUARIO/vortex-protocol/blob/main/docs/Vortex_Whitepaper_v1.0.pdf
+https://github.com/SEU_USUARIO/traverse-protocol/blob/main/docs/Traverse_Whitepaper_v1.0.pdf
 ```
 
 ### Para um link de download direto:
 ```
-https://raw.githubusercontent.com/SEU_USUARIO/vortex-protocol/main/docs/Vortex_Whitepaper_v1.0.pdf
+https://raw.githubusercontent.com/SEU_USUARIO/traverse-protocol/main/docs/Traverse_Whitepaper_v1.0.pdf
 ```
 
 ---
@@ -104,7 +104,7 @@ https://raw.githubusercontent.com/SEU_USUARIO/vortex-protocol/main/docs/Vortex_W
 |---|---|
 | 🔴 Alta | Contratar auditoria antes de qualquer mainnet |
 | 🔴 Alta | Configurar Safe Multisig (safe.global) para tesouro |
-| 🟡 Média | Criar Twitter/X @VortexProtocol e anunciar testnet |
+| 🟡 Média | Criar Twitter/X @TraverseProtocol e anunciar testnet |
 | 🟡 Média | Publicar em fóruns: ETHResearch, DeFiLlama, Mirror |
-| 🟢 Normal | Criar site vtxprotocol.io |
+| 🟢 Normal | Criar site traverseprotocol.io |
 | 🟢 Normal | Configurar bug bounty no Immunefi |

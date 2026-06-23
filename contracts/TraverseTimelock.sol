@@ -4,20 +4,20 @@ pragma solidity ^0.8.24;
 import "@openzeppelin/contracts/governance/TimelockController.sol";
 
 /**
- * @title VortexTimelock — Governance Timelock Executor
- * @notice Wraps OpenZeppelin's TimelockController with Vortex-specific defaults.
+ * @title TraverseTimelock — Governance Timelock Executor
+ * @notice Wraps OpenZeppelin's TimelockController with Traverse-specific defaults.
  *
  * Configuration:
  *   - Minimum delay: 2 days — no governance action can be executed sooner.
- *   - Proposers: set to the VortexGovernor address during deployment.
+ *   - Proposers: set to the TraverseGovernor address during deployment.
  *   - Executors: address(0) — any account can execute a ready operation
  *     (decentralised execution; callers pay their own gas).
  *   - Admin: address(0) after setup (no permanent admin key; timelock governs itself).
  *
- * Post-deployment, ownership of VortexRouter, VortexStaking, and VortexTreasury
+ * Post-deployment, ownership of TraverseRouter, TraverseStaking, and TraverseTreasury
  * is transferred to this contract so that all parameter changes go through governance.
  */
-contract VortexTimelock is TimelockController {
+contract TraverseTimelock is TimelockController {
     // ─────────────────────────────────────────────────────────────────────────
     // Constants
     // ─────────────────────────────────────────────────────────────────────────

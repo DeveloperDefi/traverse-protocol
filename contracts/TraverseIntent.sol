@@ -5,13 +5,13 @@ import "@openzeppelin/contracts/utils/cryptography/EIP712.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
 /**
- * @title VortexIntent — Intent Storage and EIP-712 Signing
+ * @title TraverseIntent — Intent Storage and EIP-712 Signing
  * @notice Defines the Intent struct, IntentStatus enum, and all storage/events
- *         related to user intents in the Vortex protocol. Also provides EIP-712
- *         domain separation and intent-hash utilities consumed by VortexRouter.
- * @dev    Intended to be inherited by VortexRouter, not deployed standalone.
+ *         related to user intents in the Traverse protocol. Also provides EIP-712
+ *         domain separation and intent-hash utilities consumed by TraverseRouter.
+ * @dev    Intended to be inherited by TraverseRouter, not deployed standalone.
  */
-abstract contract VortexIntent is EIP712 {
+abstract contract TraverseIntent is EIP712 {
     using ECDSA for bytes32;
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -147,7 +147,7 @@ abstract contract VortexIntent is EIP712 {
     // ─────────────────────────────────────────────────────────────────────────
 
     /**
-     * @param name    EIP-712 domain name (e.g. "VortexRouter").
+     * @param name    EIP-712 domain name (e.g. "TraverseRouter").
      * @param version EIP-712 domain version (e.g. "1").
      */
     constructor(string memory name, string memory version)

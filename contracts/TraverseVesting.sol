@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable2Step.sol";
 
 /**
- * @title VortexVesting — VTX Token Vesting with Cliff + Linear Schedule
+ * @title TraverseVesting — TRV Token Vesting with Cliff + Linear Schedule
  * @notice Manages token vesting schedules for team members, investors, and advisors.
  *         Each beneficiary has a configurable cliff period followed by linear vesting.
  *         Only the owner (deployer/governance) can create or revoke schedules.
@@ -23,7 +23,7 @@ import "@openzeppelin/contracts/access/Ownable2Step.sol";
  *   - Revocation sends unvested tokens back to owner (treasury/multisig).
  *   - Once revoked, a schedule is permanently terminated.
  */
-contract VortexVesting is ReentrancyGuard, Ownable2Step {
+contract TraverseVesting is ReentrancyGuard, Ownable2Step {
     using SafeERC20 for IERC20;
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -35,8 +35,8 @@ contract VortexVesting is ReentrancyGuard, Ownable2Step {
 
     struct VestingSchedule {
         address beneficiary;    // Recipient of vested tokens
-        uint256 totalAmount;    // Total VTX allocated under this schedule
-        uint256 claimedAmount;  // VTX already claimed by beneficiary
+        uint256 totalAmount;    // Total TRV allocated under this schedule
+        uint256 claimedAmount;  // TRV already claimed by beneficiary
         uint256 startTime;      // Unix timestamp when vesting begins
         uint256 cliffDuration;  // Seconds from startTime before any tokens vest
         uint256 vestingDuration;// Total vesting period in seconds (including cliff)
@@ -48,10 +48,10 @@ contract VortexVesting is ReentrancyGuard, Ownable2Step {
     // State
     // ─────────────────────────────────────────────────────────────────────────
 
-    /// @notice VTX token contract.
-    IERC20 public immutable vtx;
+    /// @notice TRV token contract.
+    IERC20 public immutable trv;
 
-    /// @notice Total VTX locked across all active schedules.
+    /// @notice Total TRV locked across all active schedules.
     uint256 public totalLocked;
 
     /// @notice All vesting schedules, indexed by sequential ID.
@@ -94,12 +94,12 @@ contract VortexVesting is ReentrancyGuard, Ownable2Step {
     // ─────────────────────────────────────────────────────────────────────────
 
     /**
-     * @param _vtx   Address of the VTX ERC-20 token.
+     * @param _vtx   Address of the TRV ERC-20 token.
      * @param _owner Deployer / multisig that manages schedules.
      */
     constructor(address _vtx, address _owner) Ownable(_owner) {
-        require(_vtx != address(0), "VortexVesting: zero vtx");
-        vtx = IERC20(_vtx);
+        require(_vtx != address(0), "TraverseVesting: zero trv");
+        trv = IERC20(_vtx);
     }
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -108,11 +108,11 @@ contract VortexVesting is ReentrancyGuard, Ownable2Step {
 
     /**
      * @notice Creates a new vesting schedule for `beneficiary`.
-     * @dev    The caller must have approved this contract for `totalAmount` VTX
+     * @dev    The caller must have approved this contract for `totalAmount` TRV
      *         before calling. Tokens are pulled from the caller (owner/treasury).
      *
      * @param beneficiary     Recipient address.
-     * @param totalAmount     Total VTX to vest (18-decimal wei).
+     * @param totalAmount     Total TRV to vest (18-decimal wei).
      * @param startTime       Unix timestamp when vesting begins (can be in the past for retroactive).
      * @param cliffDuration   Seconds from startTime before first tokens unlock.
      * @param vestingDuration Total duration of the vesting schedule in seconds.
@@ -127,10 +127,10 @@ contract VortexVesting is ReentrancyGuard, Ownable2Step {
         uint256  vestingDuration,
         Category category
     ) external onlyOwner nonReentrant returns (uint256 scheduleId) {
-        require(beneficiary    != address(0),          "VortexVesting: zero beneficiary");
-        require(totalAmount     > 0,                   "VortexVesting: zero amount");
-        require(vestingDuration > 0,                   "VortexVesting: zero duration");
-        require(cliffDuration  <= vestingDuration,     "VortexVesting: cliff > vesting");
+        require(beneficiary    != address(0),          "TraverseVesting: zero beneficiary");
+        require(totalAmount     > 0,                   "TraverseVesting: zero amount");
+        require(vestingDuration > 0,                   "TraverseVesting: zero duration");
+        require(cliffDuration  <= vestingDuration,     "TraverseVesting: cliff > vesting");
 
         scheduleId = nextScheduleId++;
 
@@ -149,7 +149,7 @@ contract VortexVesting is ReentrancyGuard, Ownable2Step {
         totalLocked += totalAmount;
 
         // Pull tokens from owner (must be pre-approved)
-        vtx.safeTransferFrom(msg.sender, address(this), totalAmount);
+        trv.safeTransferFrom(msg.sender, address(this), totalAmount);
 
         emit ScheduleCreated(
             scheduleId, beneficiary, totalAmount,
@@ -176,17 +176,17 @@ contract VortexVesting is ReentrancyGuard, Ownable2Step {
             n == cliffDurations.length &&
             n == vestingDurations.length &&
             n == categories.length,
-            "VortexVesting: length mismatch"
+            "TraverseVesting: length mismatch"
         );
 
         scheduleIds = new uint256[](n);
         uint256 totalPull;
 
         for (uint256 i = 0; i < n; i++) {
-            require(beneficiaries[i]   != address(0),                "VortexVesting: zero beneficiary");
-            require(totalAmounts[i]     > 0,                         "VortexVesting: zero amount");
-            require(vestingDurations[i] > 0,                         "VortexVesting: zero duration");
-            require(cliffDurations[i]  <= vestingDurations[i],       "VortexVesting: cliff > vesting");
+            require(beneficiaries[i]   != address(0),                "TraverseVesting: zero beneficiary");
+            require(totalAmounts[i]     > 0,                         "TraverseVesting: zero amount");
+            require(vestingDurations[i] > 0,                         "TraverseVesting: zero duration");
+            require(cliffDurations[i]  <= vestingDurations[i],       "TraverseVesting: cliff > vesting");
 
             uint256 sid = nextScheduleId++;
             schedules[sid] = VestingSchedule({
@@ -210,7 +210,7 @@ contract VortexVesting is ReentrancyGuard, Ownable2Step {
         }
 
         totalLocked += totalPull;
-        vtx.safeTransferFrom(msg.sender, address(this), totalPull);
+        trv.safeTransferFrom(msg.sender, address(this), totalPull);
     }
 
     /**
@@ -221,8 +221,8 @@ contract VortexVesting is ReentrancyGuard, Ownable2Step {
      */
     function revokeSchedule(uint256 scheduleId) external onlyOwner nonReentrant {
         VestingSchedule storage s = schedules[scheduleId];
-        require(s.beneficiary != address(0), "VortexVesting: unknown schedule");
-        require(!s.revoked,                  "VortexVesting: already revoked");
+        require(s.beneficiary != address(0), "TraverseVesting: unknown schedule");
+        require(!s.revoked,                  "TraverseVesting: already revoked");
 
         s.revoked = true;
 
@@ -233,7 +233,7 @@ contract VortexVesting is ReentrancyGuard, Ownable2Step {
 
         // Unvested portion returns to owner
         if (unvested > 0) {
-            vtx.safeTransfer(owner(), unvested);
+            trv.safeTransfer(owner(), unvested);
         }
 
         emit ScheduleRevoked(scheduleId, s.beneficiary, unvested);
@@ -250,15 +250,15 @@ contract VortexVesting is ReentrancyGuard, Ownable2Step {
      */
     function claim(uint256 scheduleId) external nonReentrant {
         VestingSchedule storage s = schedules[scheduleId];
-        require(s.beneficiary != address(0), "VortexVesting: unknown schedule");
+        require(s.beneficiary != address(0), "TraverseVesting: unknown schedule");
 
         uint256 claimable = _claimableAmount(s);
-        require(claimable > 0, "VortexVesting: nothing to claim");
+        require(claimable > 0, "TraverseVesting: nothing to claim");
 
         s.claimedAmount += claimable;
         totalLocked     -= claimable;
 
-        vtx.safeTransfer(s.beneficiary, claimable);
+        trv.safeTransfer(s.beneficiary, claimable);
         emit TokensClaimed(scheduleId, s.beneficiary, claimable);
     }
 
@@ -280,8 +280,8 @@ contract VortexVesting is ReentrancyGuard, Ownable2Step {
             }
         }
 
-        require(totalClaim > 0, "VortexVesting: nothing to claim");
-        vtx.safeTransfer(msg.sender, totalClaim);
+        require(totalClaim > 0, "TraverseVesting: nothing to claim");
+        trv.safeTransfer(msg.sender, totalClaim);
     }
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -289,7 +289,7 @@ contract VortexVesting is ReentrancyGuard, Ownable2Step {
     // ─────────────────────────────────────────────────────────────────────────
 
     /**
-     * @notice Returns the amount of VTX claimable right now for a schedule.
+     * @notice Returns the amount of TRV claimable right now for a schedule.
      * @param scheduleId Schedule to query.
      */
     function claimableAmount(uint256 scheduleId) external view returns (uint256) {

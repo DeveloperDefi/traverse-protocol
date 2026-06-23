@@ -7,18 +7,18 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable2Step.sol";
 
 /**
- * @title VortexTreasury — Protocol Treasury
+ * @title TraverseTreasury — Protocol Treasury
  * @notice Receives 20% of all protocol fees and holds them under governance control.
- *         Only the owner (VortexTimelock, i.e. governance) can withdraw funds.
+ *         Only the owner (TraverseTimelock, i.e. governance) can withdraw funds.
  *         Tracks per-token balances for transparency.
  *
  * Revenue flow:
- *   VortexRouter → VortexTreasury (20% of 0.05% fee on each filled intent)
+ *   TraverseRouter → TraverseTreasury (20% of 0.05% fee on each filled intent)
  *
  * Governance can withdraw ETH or any ERC-20 to an arbitrary recipient for grants,
- * buybacks, or operational expenses voted on through VortexGovernor.
+ * buybacks, or operational expenses voted on through TraverseGovernor.
  */
-contract VortexTreasury is ReentrancyGuard, Ownable2Step {
+contract TraverseTreasury is ReentrancyGuard, Ownable2Step {
     using SafeERC20 for IERC20;
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -68,12 +68,12 @@ contract VortexTreasury is ReentrancyGuard, Ownable2Step {
     // ─────────────────────────────────────────────────────────────────────────
 
     /**
-     * @param _owner Initial owner — should be transferred to VortexTimelock
+     * @param _owner Initial owner — should be transferred to TraverseTimelock
      *               immediately after Governor deployment so that all withdrawals
      *               require a governance vote.
      */
     constructor(address _owner) Ownable(_owner) {
-        require(_owner != address(0), "VortexTreasury: zero owner");
+        require(_owner != address(0), "TraverseTreasury: zero owner");
     }
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -92,13 +92,13 @@ contract VortexTreasury is ReentrancyGuard, Ownable2Step {
 
     /**
      * @notice Records that `amount` of `token` has been transferred to this contract.
-     * @dev    FIX VTX-04: Restricted to onlyOwner (previously public, allowing anyone to
+     * @dev    FIX TRV-04: Restricted to onlyOwner (previously public, allowing anyone to
      *         inflate the totalReceived counter and emit false TokenReceived events).
      * @param token  ERC-20 token address.
      * @param amount Amount to record.
      */
     function recordDeposit(address token, uint256 amount) external onlyOwner {
-        require(token != address(0), "VortexTreasury: use receive() for ETH");
+        require(token != address(0), "TraverseTreasury: use receive() for ETH");
         totalReceived[token] += amount;
         emit TokenReceived(token, msg.sender, amount);
     }
@@ -109,7 +109,7 @@ contract VortexTreasury is ReentrancyGuard, Ownable2Step {
 
     /**
      * @notice Withdraws `amount` of native ETH to `recipient`.
-     * @dev    Only callable by the owner (VortexTimelock via governance vote).
+     * @dev    Only callable by the owner (TraverseTimelock via governance vote).
      * @param recipient Destination address for the ETH.
      * @param amount    Amount of ETH to send (wei). Must be <= address(this).balance.
      */
@@ -118,11 +118,11 @@ contract VortexTreasury is ReentrancyGuard, Ownable2Step {
         onlyOwner
         nonReentrant
     {
-        require(recipient != address(0), "VortexTreasury: zero recipient");
-        require(amount > 0,              "VortexTreasury: zero amount");
-        require(address(this).balance >= amount, "VortexTreasury: insufficient ETH");
+        require(recipient != address(0), "TraverseTreasury: zero recipient");
+        require(amount > 0,              "TraverseTreasury: zero amount");
+        require(address(this).balance >= amount, "TraverseTreasury: insufficient ETH");
 
-        // FIX VTX-08: keep totalReceived in sync with actual outflows
+        // FIX TRV-08: keep totalReceived in sync with actual outflows
         if (totalReceived[address(0)] >= amount) {
             totalReceived[address(0)] -= amount;
         } else {
@@ -132,12 +132,12 @@ contract VortexTreasury is ReentrancyGuard, Ownable2Step {
         emit EthWithdrawn(recipient, amount);
 
         (bool ok, ) = recipient.call{value: amount}("");
-        require(ok, "VortexTreasury: ETH transfer failed");
+        require(ok, "TraverseTreasury: ETH transfer failed");
     }
 
     /**
      * @notice Withdraws `amount` of ERC-20 `token` to `recipient`.
-     * @dev    Only callable by the owner (VortexTimelock via governance vote).
+     * @dev    Only callable by the owner (TraverseTimelock via governance vote).
      * @param token     ERC-20 contract address.
      * @param recipient Destination address.
      * @param amount    Amount of tokens to send.
@@ -147,11 +147,11 @@ contract VortexTreasury is ReentrancyGuard, Ownable2Step {
         onlyOwner
         nonReentrant
     {
-        require(token     != address(0), "VortexTreasury: zero token");
-        require(recipient != address(0), "VortexTreasury: zero recipient");
-        require(amount > 0,              "VortexTreasury: zero amount");
+        require(token     != address(0), "TraverseTreasury: zero token");
+        require(recipient != address(0), "TraverseTreasury: zero recipient");
+        require(amount > 0,              "TraverseTreasury: zero amount");
 
-        // FIX VTX-08: keep totalReceived in sync with actual outflows
+        // FIX TRV-08: keep totalReceived in sync with actual outflows
         if (totalReceived[token] >= amount) {
             totalReceived[token] -= amount;
         } else {

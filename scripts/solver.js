@@ -1,7 +1,7 @@
 /**
- * Vortex Protocol — Solver Bot v1.0
+ * Traverse Protocol — Solver Bot v1.0
  *
- * Monitors the VortexRouter for pending intents and fills them profitably.
+ * Monitors the TraverseRouter for pending intents and fills them profitably.
  *
  * Architecture:
  *   1. Listen for IntentCreated events
@@ -16,8 +16,8 @@
  * Environment (.env):
  *   SOLVER_PRIVATE_KEY   — private key of the registered solver wallet
  *   RPC_URL              — RPC endpoint (e.g. Alchemy/Infura)
- *   ROUTER_ADDRESS       — VortexRouter contract address
- *   STAKING_ADDRESS      — VortexStaking contract address
+ *   ROUTER_ADDRESS       — TraverseRouter contract address
+ *   STAKING_ADDRESS      — TraverseStaking contract address
  *   MIN_PROFIT_BPS       — minimum profit in bps to fill (default: 10 = 0.10%)
  */
 
@@ -95,7 +95,7 @@ const pendingQueue = new Map();  // intentHash → Intent struct
 // ─────────────────────────────────────────────────────────────────────────────
 
 async function main() {
-  log("⚡ Vortex Solver Bot starting...");
+  log("⚡ Traverse Solver Bot starting...");
 
   if (!CONFIG.solverKey) {
     err("SOLVER_PRIVATE_KEY not set in .env");
@@ -315,10 +315,10 @@ async function verifySolverRegistration(staking, solverAddress) {
   try {
     const registered = await staking.isSolver(solverAddress);
     if (registered) {
-      log(`✅ Solver ${solverAddress} is registered in VortexStaking`);
+      log(`✅ Solver ${solverAddress} is registered in TraverseStaking`);
     } else {
       warn(`⚠️  Solver ${solverAddress} is NOT registered.`);
-      warn(`    Stake 10,000 VTX and call registerAsSolver() to participate.`);
+      warn(`    Stake 10,000 TRV and call registerAsSolver() to participate.`);
       warn(`    Bot will continue running but fillIntent() calls will revert.`);
     }
   } catch (e) {

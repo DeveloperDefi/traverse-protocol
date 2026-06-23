@@ -6,22 +6,22 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable2Step.sol";
 
-import "./VortexIntent.sol";
+import "./TraverseIntent.sol";
 
-interface IVortexStaking {
+interface ITraverseStaking {
     function isSolver(address solver) external view returns (bool);
     function distributeRevenue(uint256 amount) external;
 }
 
 /**
- * @title VortexRouter — Cross-Chain Intent Router with Competitive Solver Auction
+ * @title TraverseRouter — Cross-Chain Intent Router with Competitive Solver Auction
  * @notice Core protocol contract. Users submit signed intents describing a desired
  *         cross-chain swap; registered solvers compete to fill them by offering the
  *         best output. The solver that calls fillIntent() first with an output meeting
  *         or exceeding minOutput wins the auction and executes the trade.
  *
  * Fee model (0.05% of inputAmount):
- *   - 70% → VortexStaking (distributed proportionally to stakers)
+ *   - 70% → TraverseStaking (distributed proportionally to stakers)
  *   - 20% → Treasury
  *   - 10% → Operations wallet
  *
@@ -30,7 +30,7 @@ interface IVortexStaking {
  *   - Checks-Effects-Interactions pattern throughout.
  *   - EIP-712 signature validation on every intent submission.
  */
-contract VortexRouter is VortexIntent, ReentrancyGuard, Ownable2Step {
+contract TraverseRouter is TraverseIntent, ReentrancyGuard, Ownable2Step {
     using SafeERC20 for IERC20;
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -43,11 +43,11 @@ contract VortexRouter is VortexIntent, ReentrancyGuard, Ownable2Step {
     /// @notice Basis-point denominator.
     uint256 public constant BPS_DENOMINATOR = 10_000;
 
-    /// @notice FIX VTX-06: Minimum input amount to prevent fee evasion via dust amounts.
+    /// @notice FIX TRV-06: Minimum input amount to prevent fee evasion via dust amounts.
     ///         At 5 bps, inputs below 20_000 wei produce a zero fee due to integer division.
     uint256 public constant MIN_INPUT_AMOUNT = 20_000;
 
-    /// @notice FIX VTX-07: Maximum allowed deadline offset from block.timestamp (7 days).
+    /// @notice FIX TRV-07: Maximum allowed deadline offset from block.timestamp (7 days).
     ///         Prevents perpetual intents that lock user funds indefinitely.
     uint256 public constant MAX_DEADLINE_OFFSET = 7 days;
 
@@ -64,8 +64,8 @@ contract VortexRouter is VortexIntent, ReentrancyGuard, Ownable2Step {
     // State
     // ─────────────────────────────────────────────────────────────────────────
 
-    /// @notice VortexStaking contract — validates solvers and receives staker fees.
-    IVortexStaking public staking;
+    /// @notice TraverseStaking contract — validates solvers and receives staker fees.
+    ITraverseStaking public staking;
 
     /// @notice Treasury address — receives 20% of fees.
     address public treasury;
@@ -76,7 +76,7 @@ contract VortexRouter is VortexIntent, ReentrancyGuard, Ownable2Step {
     /// @notice Whether the protocol is paused (emergency stop).
     bool public paused;
 
-    /// @notice FIX VTX-02: Cross-chain routing disabled by default.
+    /// @notice FIX TRV-02: Cross-chain routing disabled by default.
     ///         True cross-chain delivery cannot be verified on-chain without a messaging
     ///         layer (LayerZero, Wormhole, etc.). Until that proof mechanism is integrated,
     ///         only same-chain intents are permitted (sourceChain == destChain).
@@ -105,7 +105,7 @@ contract VortexRouter is VortexIntent, ReentrancyGuard, Ownable2Step {
     // ─────────────────────────────────────────────────────────────────────────
 
     modifier whenNotPaused() {
-        require(!paused, "VortexRouter: paused");
+        require(!paused, "TraverseRouter: paused");
         _;
     }
 
@@ -114,8 +114,8 @@ contract VortexRouter is VortexIntent, ReentrancyGuard, Ownable2Step {
     // ─────────────────────────────────────────────────────────────────────────
 
     /**
-     * @param _staking    Address of the VortexStaking contract.
-     * @param _treasury   Address of the VortexTreasury contract.
+     * @param _staking    Address of the TraverseStaking contract.
+     * @param _treasury   Address of the TraverseTreasury contract.
      * @param _opsWallet  Address of the operations multisig.
      * @param _owner      Initial owner — transferred to Timelock post-deploy.
      */
@@ -125,14 +125,14 @@ contract VortexRouter is VortexIntent, ReentrancyGuard, Ownable2Step {
         address _opsWallet,
         address _owner
     )
-        VortexIntent("VortexRouter", "1")
+        TraverseIntent("TraverseRouter", "1")
         Ownable(_owner)
     {
-        require(_staking   != address(0), "VortexRouter: zero staking");
-        require(_treasury  != address(0), "VortexRouter: zero treasury");
-        require(_opsWallet != address(0), "VortexRouter: zero opsWallet");
+        require(_staking   != address(0), "TraverseRouter: zero staking");
+        require(_treasury  != address(0), "TraverseRouter: zero treasury");
+        require(_opsWallet != address(0), "TraverseRouter: zero opsWallet");
 
-        staking   = IVortexStaking(_staking);
+        staking   = ITraverseStaking(_staking);
         treasury  = _treasury;
         opsWallet = _opsWallet;
     }
@@ -146,8 +146,8 @@ contract VortexRouter is VortexIntent, ReentrancyGuard, Ownable2Step {
      * @param _staking New staking contract address.
      */
     function setStaking(address _staking) external onlyOwner {
-        require(_staking != address(0), "VortexRouter: zero address");
-        staking = IVortexStaking(_staking);
+        require(_staking != address(0), "TraverseRouter: zero address");
+        staking = ITraverseStaking(_staking);
         emit StakingSet(_staking);
     }
 
@@ -156,7 +156,7 @@ contract VortexRouter is VortexIntent, ReentrancyGuard, Ownable2Step {
      * @param _treasury New treasury address.
      */
     function setTreasury(address _treasury) external onlyOwner {
-        require(_treasury != address(0), "VortexRouter: zero address");
+        require(_treasury != address(0), "TraverseRouter: zero address");
         treasury = _treasury;
         emit TreasurySet(_treasury);
     }
@@ -166,7 +166,7 @@ contract VortexRouter is VortexIntent, ReentrancyGuard, Ownable2Step {
      * @param _opsWallet New operations wallet address.
      */
     function setOpsWallet(address _opsWallet) external onlyOwner {
-        require(_opsWallet != address(0), "VortexRouter: zero address");
+        require(_opsWallet != address(0), "TraverseRouter: zero address");
         opsWallet = _opsWallet;
         emit OpsWalletSet(_opsWallet);
     }
@@ -182,7 +182,7 @@ contract VortexRouter is VortexIntent, ReentrancyGuard, Ownable2Step {
 
     /**
      * @notice Enables or disables cross-chain routing (sourceChain != destChain).
-     * @dev    FIX VTX-02: Cross-chain delivery cannot be verified on-chain in the current
+     * @dev    FIX TRV-02: Cross-chain delivery cannot be verified on-chain in the current
      *         architecture. Enable only after integrating a cross-chain messaging proof layer.
      * @param _enabled True to allow cross-chain intents, false to restrict to same-chain.
      */
@@ -227,17 +227,17 @@ contract VortexRouter is VortexIntent, ReentrancyGuard, Ownable2Step {
         returns (bytes32 intentHash)
     {
         // ── Checks ───────────────────────────────────────────────────────────
-        require(inputToken  != address(0),                            "VortexRouter: zero inputToken");
-        require(outputToken != address(0),                            "VortexRouter: zero outputToken");
-        // FIX VTX-06: enforce minimum to prevent dust fee evasion
-        require(inputAmount >= MIN_INPUT_AMOUNT,                      "VortexRouter: inputAmount below minimum");
-        require(minOutput    > 0,                                     "VortexRouter: zero minOutput");
-        // FIX VTX-07: enforce maximum deadline to prevent perpetual intent lock-up
-        require(deadline > block.timestamp,                           "VortexRouter: deadline in past");
-        require(deadline <= block.timestamp + MAX_DEADLINE_OFFSET,    "VortexRouter: deadline too far");
-        // FIX VTX-02: same-chain only until cross-chain proof layer is integrated
+        require(inputToken  != address(0),                            "TraverseRouter: zero inputToken");
+        require(outputToken != address(0),                            "TraverseRouter: zero outputToken");
+        // FIX TRV-06: enforce minimum to prevent dust fee evasion
+        require(inputAmount >= MIN_INPUT_AMOUNT,                      "TraverseRouter: inputAmount below minimum");
+        require(minOutput    > 0,                                     "TraverseRouter: zero minOutput");
+        // FIX TRV-07: enforce maximum deadline to prevent perpetual intent lock-up
+        require(deadline > block.timestamp,                           "TraverseRouter: deadline in past");
+        require(deadline <= block.timestamp + MAX_DEADLINE_OFFSET,    "TraverseRouter: deadline too far");
+        // FIX TRV-02: same-chain only until cross-chain proof layer is integrated
         if (!crossChainEnabled) {
-            require(sourceChain == destChain, "VortexRouter: cross-chain not enabled");
+            require(sourceChain == destChain, "TraverseRouter: cross-chain not enabled");
         }
 
         uint256 currentNonce = nonces[msg.sender];
@@ -255,8 +255,8 @@ contract VortexRouter is VortexIntent, ReentrancyGuard, Ownable2Step {
         );
 
         address signer = _recoverSigner(intentHash, signature);
-        require(signer == msg.sender, "VortexRouter: invalid signature");
-        require(intents[intentHash].user == address(0), "VortexRouter: intent exists");
+        require(signer == msg.sender, "TraverseRouter: invalid signature");
+        require(intents[intentHash].user == address(0), "TraverseRouter: intent exists");
 
         // ── Effects ──────────────────────────────────────────────────────────
         nonces[msg.sender] = currentNonce + 1;
@@ -293,7 +293,7 @@ contract VortexRouter is VortexIntent, ReentrancyGuard, Ownable2Step {
     }
 
     /**
-     * @notice Fills a pending intent. The calling solver must be registered in VortexStaking
+     * @notice Fills a pending intent. The calling solver must be registered in TraverseStaking
      *         and must deliver at least `intent.minOutput` of outputToken to the user.
      * @dev    The solver should have pre-approved this contract for `actualOutput` of
      *         outputToken. Protocol fee is deducted from inputAmount before the remainder
@@ -311,11 +311,11 @@ contract VortexRouter is VortexIntent, ReentrancyGuard, Ownable2Step {
         // ── Checks ───────────────────────────────────────────────────────────
         Intent storage intent = intents[intentHash];
 
-        require(intent.user   != address(0),           "VortexRouter: unknown intent");
-        require(intent.status == IntentStatus.PENDING,  "VortexRouter: not pending");
-        require(block.timestamp <= intent.deadline,     "VortexRouter: intent expired");
-        require(actualOutput >= intent.minOutput,       "VortexRouter: output below min");
-        require(staking.isSolver(msg.sender),           "VortexRouter: not a registered solver");
+        require(intent.user   != address(0),           "TraverseRouter: unknown intent");
+        require(intent.status == IntentStatus.PENDING,  "TraverseRouter: not pending");
+        require(block.timestamp <= intent.deadline,     "TraverseRouter: intent expired");
+        require(actualOutput >= intent.minOutput,       "TraverseRouter: output below min");
+        require(staking.isSolver(msg.sender),           "TraverseRouter: not a registered solver");
 
         // ── Fee Calculation ──────────────────────────────────────────────────
         uint256 fee          = (intent.inputAmount * FEE_BPS) / BPS_DENOMINATOR;
@@ -358,8 +358,8 @@ contract VortexRouter is VortexIntent, ReentrancyGuard, Ownable2Step {
         // ── Checks ───────────────────────────────────────────────────────────
         Intent storage intent = intents[intentHash];
 
-        require(intent.user   == msg.sender,           "VortexRouter: not intent owner");
-        require(intent.status == IntentStatus.PENDING,  "VortexRouter: not pending");
+        require(intent.user   == msg.sender,           "TraverseRouter: not intent owner");
+        require(intent.status == IntentStatus.PENDING,  "TraverseRouter: not pending");
 
         // ── Effects ──────────────────────────────────────────────────────────
         intent.status = IntentStatus.CANCELLED;
@@ -378,9 +378,9 @@ contract VortexRouter is VortexIntent, ReentrancyGuard, Ownable2Step {
     function expireIntent(bytes32 intentHash) external nonReentrant {
         Intent storage intent = intents[intentHash];
 
-        require(intent.user   != address(0),           "VortexRouter: unknown intent");
-        require(intent.status == IntentStatus.PENDING,  "VortexRouter: not pending");
-        require(block.timestamp > intent.deadline,      "VortexRouter: not yet expired");
+        require(intent.user   != address(0),           "TraverseRouter: unknown intent");
+        require(intent.status == IntentStatus.PENDING,  "TraverseRouter: not pending");
+        require(block.timestamp > intent.deadline,      "TraverseRouter: not yet expired");
 
         // ── Effects ──────────────────────────────────────────────────────────
         intent.status = IntentStatus.EXPIRED;

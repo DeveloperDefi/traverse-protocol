@@ -6,18 +6,18 @@ import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol";
 
 /**
- * @title VTX — Vortex Protocol Token
- * @notice ERC-20 governance and utility token for the Vortex cross-chain liquidity router.
- *         Fixed supply of 1,000,000,000 VTX minted entirely at deploy time.
+ * @title TRV — Traverse Protocol Token
+ * @notice ERC-20 governance and utility token for the Traverse cross-chain liquidity router.
+ *         Fixed supply of 1,000,000,000 TRV minted entirely at deploy time.
  *         Supports EIP-2612 gasless approvals (Permit) and EIP-5805 on-chain voting (Votes).
  * @dev    No mint function exists after construction. Supply can only decrease via burn().
  */
-contract VTX is ERC20, ERC20Permit, ERC20Votes {
+contract TRV is ERC20, ERC20Permit, ERC20Votes {
     // ─────────────────────────────────────────────────────────────────────────
     // Constants
     // ─────────────────────────────────────────────────────────────────────────
 
-    /// @notice Total fixed supply: 1,000,000,000 VTX (18 decimals).
+    /// @notice Total fixed supply: 1,000,000,000 TRV (18 decimals).
     uint256 public constant TOTAL_SUPPLY = 1_000_000_000 * 10 ** 18;
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -29,10 +29,10 @@ contract VTX is ERC20, ERC20Permit, ERC20Votes {
      *                      Typically a multisig or distribution contract.
      */
     constructor(address initialHolder)
-        ERC20("Vortex", "VTX")
-        ERC20Permit("Vortex")
+        ERC20("Traverse", "TRV")
+        ERC20Permit("Traverse")
     {
-        require(initialHolder != address(0), "VTX: zero address");
+        require(initialHolder != address(0), "TRV: zero address");
         _mint(initialHolder, TOTAL_SUPPLY);
     }
 
@@ -42,7 +42,7 @@ contract VTX is ERC20, ERC20Permit, ERC20Votes {
 
     /**
      * @notice Burns `amount` tokens from the caller's balance, reducing total supply.
-     * @param amount The quantity of VTX (in wei) to destroy.
+     * @param amount The quantity of TRV (in wei) to destroy.
      */
     function burn(uint256 amount) external {
         _burn(msg.sender, amount);
@@ -51,7 +51,7 @@ contract VTX is ERC20, ERC20Permit, ERC20Votes {
     /**
      * @notice Burns `amount` tokens from `account` using the caller's allowance.
      * @param account The address whose tokens will be burned.
-     * @param amount  The quantity of VTX (in wei) to destroy.
+     * @param amount  The quantity of TRV (in wei) to destroy.
      */
     function burnFrom(address account, uint256 amount) external {
         _spendAllowance(account, msg.sender, amount);

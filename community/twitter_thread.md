@@ -1,6 +1,6 @@
-# Vortex Protocol — Twitter/X Thread de Lançamento
+# Traverse Protocol — Twitter/X Thread de Lançamento
 
-> **Conta:** @VortexProtocol
+> **Conta:** @TraverseProtocol
 > **Quando postar:** Dia do deploy em testnet ou mainnet
 > **Formato:** Thread (1/N). Copiar tweet por tweet.
 
@@ -8,7 +8,7 @@
 
 **Tweet 1/12 — Hook**
 ```
-Introducing Vortex Protocol ⚡
+Introducing Traverse Protocol ⚡
 
 Cross-chain liquidity, finally done right.
 
@@ -39,7 +39,7 @@ We fixed this.
 
 **Tweet 3/12 — A solução**
 ```
-Vortex is an intent-based cross-chain router.
+Traverse is an intent-based cross-chain router.
 
 You say what you want.
 We find you the best price.
@@ -64,14 +64,14 @@ No slippage games. No MEV. Just execution.
 
 ---
 
-**Tweet 5/12 — VTX Token**
+**Tweet 5/12 — TRV Token**
 ```
-$VTX coordinates the network.
+$TRV coordinates the network.
 
 • 1,000,000,000 fixed supply (no mint ever)
-• Solver staking — 10,000 VTX minimum collateral
+• Solver staking — 10,000 TRV minimum collateral
 • 70% of all protocol fees → stakers
-• Governance — 1 VTX = 1 vote
+• Governance — 1 TRV = 1 vote
 
 Not governance theater. Real revenue sharing.
 ```
@@ -110,9 +110,9 @@ We're building this for real.
 
 **Tweet 8/12 — Competitive**
 ```
-How Vortex compares:
+How Traverse compares:
 
-                Vortex  1inch  Jupiter  CoW
+                Traverse  1inch  Jupiter  CoW
 Cross-chain      ✅      ⚠️      ❌      ❌
 Solver auction   ✅      ❌      ❌      ✅
 Intent-based     ✅      ❌      ❌      ✅
@@ -127,7 +127,7 @@ We combine the best of CoW + LiFi + more.
 ```
 Everything is open source.
 
-Contracts: github.com/Estivalett/vortex-protocol
+Contracts: github.com/Estivalett/traverse-protocol
 Whitepaper: in the repo /docs
 Tokenomics: in the repo /docs
 
@@ -144,7 +144,7 @@ This is community-owned from day 1.
 
 35% of supply → community incentives & liquidity mining
 5%  → airdrop for early users
-20% → treasury (governed by $VTX holders)
+20% → treasury (governed by $TRV holders)
 
 The protocol works for you. Not the other way around.
 ```
@@ -155,9 +155,9 @@ The protocol works for you. Not the other way around.
 ```
 Want in early?
 
-⭐ Star the repo → github.com/Estivalett/vortex-protocol
+⭐ Star the repo → github.com/Estivalett/traverse-protocol
 📄 Read the whitepaper (in /docs)
-🔔 Follow @VortexProtocol
+🔔 Follow @TraverseProtocol
 💬 Join Discord → [link]
 
 Testnet is coming. Solvers welcome.
@@ -171,10 +171,10 @@ DeFi doesn't have a liquidity problem.
 
 It has a fragmentation problem.
 
-Vortex Protocol solves it.
+Traverse Protocol solves it.
 
-⚡ vtxprotocol.io (coming soon)
-📄 Whitepaper: github.com/Estivalett/vortex-protocol
+⚡ traverseprotocol.io (coming soon)
+📄 Whitepaper: github.com/Estivalett/traverse-protocol
 
-$VTX
+$TRV
 ```

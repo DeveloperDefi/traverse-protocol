@@ -1,7 +1,7 @@
 {
-  "name": "vortex-vtx",
+  "name": "traverse-trv",
   "version": "1.0.0",
-  "description": "Vortex VTX — Cross-chain liquidity router with intent-based solver competition",
+  "description": "Traverse Protocol (TRV) — Cross-chain liquidity router with intent-based solver competition",
   "scripts": {
     "compile": "hardhat compile",
     "test": "hardhat test",
@@ -35,8 +35,8 @@
   },
   "license": "MIT",
   "keywords": [
-    "vortex",
-    "vtx",
+    "traverse",
+    "trv",
     "defi",
     "cross-chain",
     "intent",
