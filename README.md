@@ -49,7 +49,7 @@ User → Signs Intent (EIP-712) → Solver Auction → Best Solver Executes → 
 - **Solver Staking** — Minimum 10,000 TRV to register as solver (slashable collateral)
 - **Governance** — 1 TRV = 1 vote; controls fee parameters, treasury, upgrades
 - **Fee Discount** — Up to 40% off routing fees by holding TRV
-- **Revenue Sharing** — 70% of all protocol fees distributed to stakers
+- **Staker Fee Share** — protocol fees are split with solver stakers; parameters set and adjustable by governance
 
 ---
 
@@ -69,7 +69,7 @@ traverse-protocol/
 │   └── deploy.js              # Hardhat deployment script
 ├── docs/
 │   ├── Traverse_Whitepaper_v1.0.pdf
-│   └── Traverse_Tokenomics_VTX.pdf
+│   └── Traverse_Tokenomics_TRV.pdf
 ├── hardhat.config.js
 ├── package.json
 └── README.md
@@ -129,7 +129,7 @@ npm run deploy:base
 - ReentrancyGuard on all state-changing external functions
 - Checks-Effects-Interactions pattern throughout
 - 48-hour Timelock on all governance actions
-- 4/7 Multisig on treasury (Safe)
+- Treasury multisig (Safe) + timelock — planned before mainnet
 - Independent audit required before mainnet
 
 > ⚠️ **These contracts are unaudited. Do not use in production without a full security audit.**
@@ -148,7 +148,9 @@ npm run deploy:base
 | Initial Liquidity (DEX) | 7% | 70,000,000 | — | Locked 12 months |
 | Airdrop & Early Users | 5% | 50,000,000 | 1 month | 6 months linear |
 
-**Fee Distribution:** 0.05% of routed volume → 70% stakers / 20% treasury / 10% operations
+**Fee Distribution:** 0.05% of routed volume → 70% stakers / 20% treasury / 10% operations (governance-controlled, subject to change)
+
+> **Disclaimer:** TRV is a utility and governance token. Nothing in this repository constitutes investment advice or an offer of securities. Contracts are unaudited and in active development.
 
 ---
 
@@ -171,14 +173,14 @@ npm run deploy:base
 | Solver competition | ✓ | ✗ | ✗ | ✗ | ✓ |
 | Intent-based | ✓ | ✗ | ✗ | ✗ | ✓ |
 | Multi-chain launch | ✓ | ✗ | Solana only | ✓ | ✗ |
-| TRV revenue sharing | ✓ | ✗ | ✗ | ✗ | Partial |
+| Staker fee share | ✓ | ✗ | ✗ | ✗ | Partial |
 
 ---
 
 ## 📄 Documentation
 
 - [Whitepaper v1.0](docs/Traverse_Whitepaper_v1.0.pdf)
-- [Tokenomics](docs/Traverse_Tokenomics_VTX.pdf)
+- [Tokenomics](docs/Traverse_Tokenomics_TRV.pdf)
 
 ---
 
