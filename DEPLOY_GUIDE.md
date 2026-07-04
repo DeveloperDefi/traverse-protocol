@@ -16,7 +16,7 @@
 Abra o Terminal, navegue até a pasta do projeto e rode:
 
 ```bash
-cd "/Users/nathanaelestivalett/Documents/Claude/Projects/Traverse TRV"
+cd "~/traverse-protocol"
 
 # Substitua SEU_USUARIO pelo seu username do GitHub
 git remote add origin https://github.com/SEU_USUARIO/traverse-protocol.git
@@ -37,7 +37,7 @@ Pronto — seu repo estará em: `https://github.com/SEU_USUARIO/traverse-protoco
 
 #### A) Instalar dependências do projeto
 ```bash
-cd "/Users/nathanaelestivalett/Documents/Claude/Projects/Traverse TRV"
+cd "~/traverse-protocol"
 npm install
 ```
 
@@ -55,7 +55,7 @@ Você pode usar MetaMask para pegar sua chave privada:
 
 #### E) Configurar .env
 ```bash
-cd "/Users/nathanaelestivalett/Documents/Claude/Projects/Traverse TRV"
+cd "~/traverse-protocol"
 cp .env.example .env
 # Abra o .env e preencha:
 # PRIVATE_KEY=sua_chave_sem_0x
@@ -75,7 +75,7 @@ Após o deploy, o script salva os endereços em `deployments.json`. Copie esses 
 # Obtenha API key em: https://basescan.org (grátis)
 # Adicione BASESCAN_API_KEY no .env
 
-npx hardhat verify --network base-sepolia ENDERECO_DO_VTX
+npx hardhat verify --network base-sepolia ENDERECO_DO_TRV
 ```
 
 ---
@@ -84,7 +84,7 @@ npx hardhat verify --network base-sepolia ENDERECO_DO_VTX
 
 Os PDFs já estão na pasta `docs/`:
 - `docs/Traverse_Whitepaper_v1.0.pdf`
-- `docs/Traverse_Tokenomics_VTX.pdf`
+- `docs/Traverse_Tokenomics_TRV.pdf`
 
 Após o push para o GitHub, eles ficam acessíveis em:
 ```
