@@ -102,7 +102,7 @@ Solvers são o coração do protocolo. Você precisa de 10.000 TRV em stake e im
 **Bugs e vulnerabilidades:**
 Reporte em #🐛-bug-reports. Quando o bug bounty no Immunefi estiver ativo, vulnerabilidades críticas serão recompensadas.
 
-Auditoria independente em andamento. Mainnet em Q4 2026.
+Revisão interna concluída; auditoria independente planejada antes do mainnet (Q4 2026).
 
 ⚡
 
