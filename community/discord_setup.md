@@ -56,7 +56,7 @@ O Traverse Protocol é um roteador de liquidez cross-chain com execução basead
 → Governança real: 1 TRV = 1 voto
 
 **Links importantes:**
-📄 GitHub: https://github.com/Estivalett/traverse-protocol
+📄 GitHub: https://github.com/DeveloperDefi/traverse-protocol
 📝 Whitepaper: no repositório em `/docs`
 🐦 Twitter: @TRVprotocol
 🌐 Site: traverseprotocol.io *(em breve)*
