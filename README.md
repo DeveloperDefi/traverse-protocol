@@ -179,8 +179,8 @@ npm run deploy:base
 
 ## 📄 Documentation
 
-- [Whitepaper v1.0](docs/Traverse_Whitepaper_v1.0.pdf)
-- [Tokenomics](docs/Traverse_Tokenomics_TRV.pdf)
+- [Whitepaper v1.0](Traverse_Whitepaper_v1.0.docx)
+- [Tokenomics](Traverse_Tokenomics_TRV.docx)
 
 ---
 
