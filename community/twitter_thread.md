@@ -70,10 +70,10 @@ $TRV coordinates the network.
 
 • 1,000,000,000 fixed supply (no mint ever)
 • Solver staking — 10,000 TRV minimum collateral
-• 70% of all protocol fees → stakers
+• Protocol fees shared with solver stakers (governance-set)
 • Governance — 1 TRV = 1 vote
 
-Not governance theater. Real revenue sharing.
+Not governance theater. Real utility.
 ```
 
 ---
@@ -88,7 +88,7 @@ We took security seriously.
 ✅ 48-hour Timelock on all governance actions
 ✅ Slashable solver collateral
 
-Independent audit in progress before mainnet.
+Independent audit planned before mainnet.
 ```
 
 ---
@@ -127,7 +127,7 @@ We combine the best of CoW + LiFi + more.
 ```
 Everything is open source.
 
-Contracts: github.com/Estivalett/traverse-protocol
+Contracts: github.com/DeveloperDefi/traverse-protocol
 Whitepaper: in the repo /docs
 Tokenomics: in the repo /docs
 
@@ -155,7 +155,7 @@ The protocol works for you. Not the other way around.
 ```
 Want in early?
 
-⭐ Star the repo → github.com/Estivalett/traverse-protocol
+⭐ Star the repo → github.com/DeveloperDefi/traverse-protocol
 📄 Read the whitepaper (in /docs)
 🔔 Follow @TRVprotocol
 💬 Join Discord → [link]
@@ -174,7 +174,7 @@ It has a fragmentation problem.
 Traverse Protocol solves it.
 
 ⚡ traverseprotocol.io (coming soon)
-📄 Whitepaper: github.com/Estivalett/traverse-protocol
+📄 Whitepaper: github.com/DeveloperDefi/traverse-protocol
 
 $TRV
 ```
