@@ -70,7 +70,7 @@ TRV has four real utility pillars:
 
 **Solver Staking.** To participate as a solver, entities must stake a minimum of 10,000 TRV. This collateral is slashable by governance in cases of provable misbehavior, aligning solver incentives with user outcomes.
 
-**Revenue Sharing.** 70% of all protocol fees are distributed proportionally to TRV stakers. As protocol volume grows, staking rewards grow with it. This is real economic value, not inflationary emissions.
+**Fee Distribution.** Protocol fees are split between solver stakers, the protocol treasury, and operations. The split is a governance parameter — TRV holders can adjust it over time.
 
 **Governance.** TRV holders vote on protocol parameters: fee levels, treasury allocation, solver slash conditions, and upgrades. All governance actions pass through a 48-hour Timelock, giving the community time to react to any proposal.
 
@@ -135,7 +135,7 @@ CEX listings. V2 protocol with permissionless solver registration. Global expans
 
 Everything is public. No black boxes.
 
-- **GitHub:** https://github.com/Estivalett/traverse-protocol
+- **GitHub:** https://github.com/DeveloperDefi/traverse-protocol
 - **Whitepaper:** in `/docs` folder of the repository
 - **Tokenomics:** in `/docs` folder of the repository
 
@@ -149,7 +149,7 @@ The Traverse Protocol is being built for a future where cross-chain liquidity is
 
 - **Website:** traverseprotocol.io *(coming soon)*
 - **Twitter:** [@TRVprotocol](https://twitter.com/TRVprotocol)
-- **GitHub:** [Estivalett/traverse-protocol](https://github.com/Estivalett/traverse-protocol)
+- **GitHub:** [Estivalett/traverse-protocol](https://github.com/DeveloperDefi/traverse-protocol)
 - **Email:** hello@traverseprotocol.io
 
 If you're a solver, liquidity provider, or developer who wants to build on top of Traverse — reach out. We're at the beginning of something real.
