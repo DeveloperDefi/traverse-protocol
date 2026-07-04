@@ -149,7 +149,7 @@ The Traverse Protocol is being built for a future where cross-chain liquidity is
 
 - **Website:** traverseprotocol.io *(coming soon)*
 - **Twitter:** [@TRVprotocol](https://twitter.com/TRVprotocol)
-- **GitHub:** [Estivalett/traverse-protocol](https://github.com/DeveloperDefi/traverse-protocol)
+- **GitHub:** [DeveloperDefi/traverse-protocol](https://github.com/DeveloperDefi/traverse-protocol)
 - **Email:** hello@traverseprotocol.io
 
 If you're a solver, liquidity provider, or developer who wants to build on top of Traverse — reach out. We're at the beginning of something real.
