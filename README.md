@@ -1,6 +1,10 @@
 # ⚡ Traverse Protocol (TRV)
 
-> **Conectando liquidez em um único fluxo.**
+> **Cross-chain liquidity, routed by intent.**
+
+> 🪙 **$TRV is live on Solana** — fair launch on pump.fun, October 27, 2026
+> CA: `AqYxQFndwosnbXeQXXnqyJUw471YddxbZqkwosDvpump` · [pump.fun](https://pump.fun/coin/AqYxQFndwosnbXeQXXnqyJUw471YddxbZqkwosDvpump) · [Discord](https://discord.gg/xA6KsAnhM) · [X](https://x.com/TRVProtocol)
+> Any other "TRV" is not affiliated with this project.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
 [![Solidity](https://img.shields.io/badge/Solidity-0.8.24-363636.svg?logo=solidity)](https://soliditylang.org/)
@@ -41,15 +45,18 @@ User → Signs Intent (EIP-712) → Solver Auction → Best Solver Executes → 
 
 | Property | Value |
 |---|---|
-| Standard | ERC-20 + ERC20Permit + ERC20Votes |
-| Total Supply | 1,000,000,000 TRV (fixed, no mint) |
-| Networks | Base, Arbitrum (launch) → Multi-chain |
+| Network | Solana (SPL token) |
+| Contract | `AqYxQFndwosnbXeQXXnqyJUw471YddxbZqkwosDvpump` |
+| Total Supply | 1,000,000,000 TRV (fixed; mint authority revoked) |
+| Launch | Fair launch on pump.fun, Oct 27, 2026: no presale, no team or investor allocation |
 
-**4 Pillars of Utility:**
-- **Solver Staking** — Minimum 10,000 TRV to register as solver (slashable collateral)
-- **Governance** — 1 TRV = 1 vote; controls fee parameters, treasury, upgrades
-- **Fee Discount** — Up to 40% off routing fees by holding TRV
-- **Staker Fee Share** — protocol fees are split with solver stakers; parameters set and adjustable by governance
+**Planned utilities (not live yet).** The protocol contracts in this repo target Base (EVM). TRV will be bridged to Base with a supply-preserving bridge, and the utilities below activate only after the contracts and bridge are audited:
+- **Solver Staking**: minimum 10,000 TRV as slashable collateral
+- **Governance**: 1 staked TRV = 1 vote over fees, parameters, treasury and upgrades
+- **Fee Discount**: up to 50% off the 0.05% routing fee by holding TRV
+- **Fee Distribution**: proposed share of protocol fees for stakers, subject to legal review and governance
+
+> `contracts/TRV.sol` is the original ERC-20 design and is superseded by the Solana launch. It will be replaced by the bridged TRV representation on Base.
 
 ---
 
@@ -58,7 +65,7 @@ User → Signs Intent (EIP-712) → Solver Auction → Best Solver Executes → 
 ```
 traverse-protocol/
 ├── contracts/
-│   ├── TRV.sol                # ERC-20 token (fixed 1B supply)
+│   ├── TRV.sol                # Original ERC-20 design (superseded by Solana launch)
 │   ├── TraverseIntent.sol       # Intent structure + EIP-712 signing
 │   ├── TraverseRouter.sol       # Core routing + solver competition
 │   ├── TraverseStaking.sol      # Staking + revenue distribution
@@ -68,8 +75,8 @@ traverse-protocol/
 ├── scripts/
 │   └── deploy.js              # Hardhat deployment script
 ├── docs/
-│   ├── Traverse_Whitepaper_v1.0.pdf
-│   └── Traverse_Tokenomics_TRV.pdf
+│   ├── Traverse_Whitepaper_v2.0.pdf
+│   └── Traverse_Tokenomics_TRV_v2.0.pdf
 ├── hardhat.config.js
 ├── package.json
 └── README.md
@@ -138,19 +145,19 @@ npm run deploy:base
 
 ## 📊 Tokenomics
 
-| Category | % | TRV | Cliff | Vesting |
-|---|---|---|---|---|
-| Community & Incentives | 35% | 350,000,000 | — | 4 years gradual |
-| Team & Founders | 18% | 180,000,000 | 12 months | 36 months linear |
-| Seed Investors | 8% | 80,000,000 | 6 months | 24 months linear |
-| Series A | 7% | 70,000,000 | 3 months | 18 months linear |
-| Protocol Treasury | 20% | 200,000,000 | — | Governance-controlled |
-| Initial Liquidity (DEX) | 7% | 70,000,000 | — | Locked 12 months |
-| Airdrop & Early Users | 5% | 50,000,000 | 1 month | 6 months linear |
+| Bucket | Approx. TRV | Approx. % | Notes |
+|---|---|---|---|
+| pump.fun bonding curve | ~793,100,000 | ~79.3% | Sold openly on the curve |
+| Liquidity reserve | ~206,900,000 | ~20.7% | Migrated to an AMM pool at graduation |
+| Team / investors / treasury | 0 | 0% | No pre-allocation. Creator buy at launch: 0 |
 
-**Fee Distribution:** 0.05% of routed volume → 70% stakers / 20% treasury / 10% operations (governance-controlled, subject to change)
+**Disclosed team holdings:** after launch the creator bought ~6.22M TRV (~0.62%) on the open curve, wallet [`3q2URVEc95XScuN8g15FndYjntNshgiCMHT7B8ZDHDgN`](https://solscan.io/account/3q2URVEc95XScuN8g15FndYjntNshgiCMHT7B8ZDHDgN). Not locked.
 
-> **Disclaimer:** TRV is a utility and governance token. Nothing in this repository constitutes investment advice or an offer of securities. Contracts are unaudited and in active development.
+Figures follow pump.fun's standard launch parameters; verify on-chain. Any team position will be disclosed publicly (wallet, amount, lock terms). The project is funded by pump.fun creator fees (paid in SOL). Full details: [TRV Tokenomics v2.0](docs/Traverse_Tokenomics_TRV_v2.0.pdf).
+
+**Proposed protocol fee:** 0.05% of routed volume → 70% stakers / 20% treasury / 10% operations, governance-controlled, and only after audit and legal review.
+
+> **Disclaimer:** Nothing in this repository constitutes investment advice or an offer of securities. TRV has no live protocol utility yet. Contracts are unaudited and in active development.
 
 ---
 
@@ -158,10 +165,13 @@ npm run deploy:base
 
 | Quarter | Milestone |
 |---|---|
-| Q3 2026 | Public testnet · Bug bounty · Independent audit |
-| Q4 2026 | Mainnet (Base + Arbitrum) · DEX launch · Airdrop |
-| Q1–Q2 2027 | Solana + BSC expansion · $100M+ monthly volume |
-| Q3–Q4 2027 | CEX listings · Protocol V2 · Global expansion |
+| Q4 2026 | ✅ TRV fair launch on pump.fun · Public testnet on Base Sepolia · Solver reference bot |
+| Q1 2027 | Bridge design + testnet integration with test TRV · Audit scoping |
+| Q2 2027 | Independent audit · Bug bounty · Bridge TRV to Base |
+| H2 2027 | Mainnet beta on Base (capped volume) · Staking + governance activation |
+| 2028 | More chains · Solver SDK · Progressive decentralization |
+
+*Targets, not commitments.*
 
 ---
 
@@ -173,14 +183,14 @@ npm run deploy:base
 | Solver competition | ✓ | ✗ | ✗ | ✗ | ✓ |
 | Intent-based | ✓ | ✗ | ✗ | ✗ | ✓ |
 | Multi-chain launch | ✓ | ✗ | Solana only | ✓ | ✗ |
-| Staker fee share | ✓ | ✗ | ✗ | ✗ | Partial |
+| Staker fee share (planned) | ✓ | ✗ | ✗ | ✗ | Partial |
 
 ---
 
 ## 📄 Documentation
 
-- [Whitepaper v1.0 (PDF)](docs/Traverse_Whitepaper_v1.0.pdf)
-- [Tokenomics (PDF)](docs/Traverse_Tokenomics_TRV.pdf)
+- [Whitepaper v2.0 (PDF)](docs/Traverse_Whitepaper_v2.0.pdf) · [DOCX](Traverse_Whitepaper_v2.0.docx)
+- [TRV Tokenomics v2.0 (PDF)](docs/Traverse_Tokenomics_TRV_v2.0.pdf) · [DOCX](Traverse_Tokenomics_TRV_v2.0.docx)
 
 ---
 
@@ -192,9 +202,9 @@ This repository is for informational and development purposes only. TRV tokens r
 
 ## 📬 Contact
 
-- Website: [traverseprotocol.io](https://traverseprotocol.io) *(coming soon)*
-- Email: hello@traverseprotocol.io
-- Twitter: [@TRVprotocol](https://twitter.com/TRVprotocol)
+- Website: [traverse-protocol.netlify.app](https://traverse-protocol.netlify.app)
+- X: [@TRVProtocol](https://x.com/TRVProtocol)
+- Discord: [discord.gg/xA6KsAnhM](https://discord.gg/xA6KsAnhM)
 
 ---
 

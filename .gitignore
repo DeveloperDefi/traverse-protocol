@@ -7,3 +7,4 @@ typechain-types/
 deployments.json
 *.log
 .DS_Store
+_archive_v1_private/
